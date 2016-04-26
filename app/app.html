@@ -1,0 +1,15 @@
+<ion-menu #menu [content]="content" id="leftMenu" side="left">
+    <ion-toolbar secondary>
+        <ion-title>Menu</ion-title>
+    </ion-toolbar>
+    <ion-content>
+        <ion-list>
+            <button ion-item (click)="openPage(page)" *ngFor="#page of pages"><ion-icon name="{{page.icon}}"></ion-icon> {{page.label}}</button>
+            <button ion-item><ion-icon name="star"></ion-icon> Favoris</button>
+            <button ion-item menuClose="leftMenu" detail-none><ion-icon name="close"></ion-icon> Close</button>
+        </ion-list>
+    </ion-content>
+</ion-menu>
+<ion-view>
+    <ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>
+</ion-view>

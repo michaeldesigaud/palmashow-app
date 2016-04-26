@@ -1,0 +1,36 @@
+<ion-navbar *navbar class="show-navbar" primary>
+    <button menuToggle>
+        <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>{{currentSound ? currentSound.name : title}}</ion-title>
+</ion-navbar>
+<ion-content>
+    <ion-list>
+        <ion-item *ngFor="#sound of sounds" (click)="onPlay($event,sound)">
+            <ion-thumbnail item-left *ngIf="sound.user_id">
+                <img src="{{getThumbtail(sound.user_id)}}">
+            </ion-thumbnail>
+            <h2>{{sound.name}}</h2>
+            <p *ngIf="sound.user_id">{{getUsername(sound.user_id)}}</p>
+            <span item-right [hidden]="!sound.playing">
+                <div class="center-me">
+                    <div class="equalizer"></div>
+                </div>
+            </span>
+            <div item-right class="spinner" [hidden]="!sound.loading">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+            <button secondary (click)="onClickFavoris($event)">
+                <ion-icon name="star"></ion-icon> Favoris
+            </button>
+            <button clear secondary item-right [hidden]="sound.playing">
+                <ion-icon name='musical-notes'></ion-icon>
+            </button>
+        </ion-item>
+    </ion-list>
+</ion-content>
+<ion-toolbar position="bottom">
+    <media-player></media-player>
+</ion-toolbar>

@@ -1,0 +1,22 @@
+<ion-navbar *navbar class="show-navbar" primary>
+    <button menuToggle>
+        <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>Le palmashow</ion-title>
+</ion-navbar>
+<ion-content>
+    <ion-card *ngFor="#group of groups" (click)="goToGroupsPage(group)">
+        <img src="{{group.imageName}}"/>
+        <ion-card-content>
+            <ion-card-title>{{group.title}}</ion-card-title>
+            <p>{{group.description}}</p>
+        </ion-card-content>
+        <ion-row no-padding>
+            <ion-col text-right>
+                <button clear small secondary>
+                    36<ion-icon name='musical-notes'></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+</ion-content>
