@@ -5,6 +5,9 @@
     <ion-title>Le palmashow</ion-title>
 </ion-navbar>
 <ion-content>
+    <ion-refresher (refresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-card *ngFor="#group of groups" (click)="goToGroupsPage(group)">
         <img src="{{group.imageName}}"/>
         <ion-card-content>

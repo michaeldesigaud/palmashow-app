@@ -2,9 +2,8 @@
  * Sounds page component
  * Created by Michael DESIGAUD on 19/04/2016.
  */
-import {Page,NavParams,NavController,Modal,Platform} from 'ionic-angular/index';
-import {Http} from 'angular2/http';
-import {NgZone,ViewChild} from 'angular2/core';
+import {Page,NavParams,NavController,Platform,Alert,Refresher} from 'ionic-angular/index';
+import {ViewChild} from 'angular2/core';
 import {PathUtils} from "../../utils/app.utils";
 import {MediaService} from '../../services/media.service';
 import {DataService} from '../../services/data.service';
@@ -19,22 +18,39 @@ import {CachedPage} from '../cache/cache-page';
 export class SoundsPage extends CachedPage {
     @ViewChild(MediaPlayer) private mediaPlayer:MediaPlayer;
     private title:string;
+    private group:any;
     private sounds:Array<any>;
     private userInfo:boolean = false;
     private currentSound:any;
-    constructor(private mediaService:MediaService,private dataService:DataService,navParams:NavParams,zone:NgZone,platform:Platform,cacheService:CacheService) {
+    constructor(private mediaService:MediaService,private navController:NavController,private dataService:DataService,navParams:NavParams,platform:Platform,cacheService:CacheService) {
         super(platform,cacheService);
-        this.sounds = navParams.data.sounds;
+        this.group = navParams.data.group;
         this.title = navParams.data.title;
         this.userInfo = navParams.data.userInfo;
 
+        this.addListeners();
+
+        this.cacheService.soundDownloaded.subscribe((sound:any) => this.mediaPlayer.play(sound));
+
+        this.doRefresh(null,false);
+    }
+    doRefresh(refresher:Refresher,reload:boolean = true) {
+        if(reload) {
+            this.dataService.clearSounds();
+        }
+        this.dataService.getSounds().subscribe((sounds:Array<any>) => {
+            this.sounds = sounds.filter((sound:any) => sound.group_id === this.group.id);
+            if(reload) {
+                refresher.complete();
+            }
+        });
+    }
+    addListeners():void {
         this.mediaService.mediaEnd.subscribe((sound) => {
             this.sounds.forEach((_sound:any) => {
                 if(_sound.id === sound.id) {
-                    zone.run(() =>  {
-                        sound.playing = false;
-                        sound.loading = false;
-                    });
+                    sound.playing = false;
+                    sound.loading = false;
                 }
             });
         });
@@ -43,22 +59,41 @@ export class SoundsPage extends CachedPage {
             this.sounds.forEach((_sound:any) => {
                 if(_sound.id === sound.id) {
                     console.log('Sound '+sound.name+' is playing');
-                    zone.run(() =>  {
-                        sound.loading = false;
-                        sound.playing = true;
-                        this.currentSound = sound;
-                    });
+                    sound.loading = false;
+                    sound.playing = true;
+                    this.currentSound = sound;
                 }
             });
         });
     }
     onPlay(event:Event,sound:any) {
         event.preventDefault();
-        this.mediaPlayer.play(event,sound);
+        this.cacheService.cacheSound(sound);
     }
     onClickFavoris(event:Event,sound:any):void {
         event.stopImmediatePropagation();
         console.log('Adding sound to favoris',sound);
+    }
+    removeFromCache(event:Event,sound:any):void {
+        event.stopImmediatePropagation();
+        let confirm:Alert = Alert.create({
+            title: 'Supprimer du cache ?',
+            message: 'La chanson sera supprimée du cache et sera téléchargée à la prochaine écoute',
+            buttons: [
+                {
+                    text: 'Confirmer',
+                    handler: () => {
+                        this.cacheService.removeSound(sound,() => confirm.dismiss());
+                    }
+                },
+                {
+                    text: 'Annuler',
+                    handler: () => confirm.dismiss()
+                }
+            ]
+        });
+        this.navController.present(confirm);
+
     }
     getThumbtail(id:number):string {
         let user:any = this.dataService.getUserById(id);

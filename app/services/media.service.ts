@@ -31,6 +31,7 @@ export class MediaService {
         this.media.currentTime = 0;
     }
     play(newSound:any):void {
+        console.log('Start sound',newSound);
         if(this.media && !this.media.paused) {
             this.stop();
         }

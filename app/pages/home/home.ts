@@ -1,4 +1,4 @@
-import {Page,NavController,Platform} from 'ionic-angular/index';
+import {Page,NavController,Platform,Refresher} from 'ionic-angular/index';
 import {GroupsPage} from '../groups/groups';
 import {DataService} from '../../services/data.service';
 import {CachedPage} from '../cache/cache-page';
@@ -15,10 +15,21 @@ import {CacheService} from '../../services/cache.service';
 export class HomePage{
     groups:Array<any>;
     constructor(private navController:NavController,private dataService:DataService,private cacheService:CacheService){
-        dataService.getGroups().subscribe((groups:Array<any>) => this.groups = groups.filter(group => !group.parent_id));
+        this.doRefresh(null,false);
+    }
+    doRefresh(refresher:Refresher,reload:boolean = true) {
+        if(reload) {
+            this.dataService.removeGroups();
+        }
+        this.dataService.getGroups().subscribe((groups:Array<any>) => {
+            this.groups = groups.filter(group => !group.parent_id);
+            if(reload) {
+                refresher.complete();
+            }
+        });
     }
     onPageLoaded():void {
-        this.cacheService.cacheLoaded.subscribe(() => {
+        this.cacheService.imageCacheLoaded.subscribe(() => {
             this.cacheService.cacheImages($('img'));
         });
     }

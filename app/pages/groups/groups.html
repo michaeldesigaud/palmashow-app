@@ -2,9 +2,12 @@
     <button menuToggle>
         <ion-icon name='menu'></ion-icon>
     </button>
-    <ion-title>Les personnages</ion-title>
+    <ion-title>{{parentGroup.title}}</ion-title>
 </ion-navbar>
 <ion-content>
+    <ion-refresher (refresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-card *ngFor="#group of groups" (click)="onClickListen($event,group)">
         <img src="{{group.imageName}}">
         <ion-card-content>

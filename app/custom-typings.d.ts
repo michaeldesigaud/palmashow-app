@@ -10,3 +10,10 @@ interface ImgCache {
     cacheFile(src:string,func:Function);
 }
 declare var ImgCache:ImgCache;
+
+interface CordovaFileCache {}
+declare var CordovaFileCache:CordovaFileCache;
+
+interface CordovaPromiseFS {}
+declare var CordovaPromiseFS:CordovaPromiseFS;
+

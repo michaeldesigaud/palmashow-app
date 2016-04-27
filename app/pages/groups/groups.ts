@@ -1,9 +1,9 @@
 /**
- * Home page component
+ * Groups page component
  * Created by Michael DESIGAUD on 19/04/2016.
  */
 
-import {Page,NavController,NavParams,Platform} from 'ionic-angular/index';
+import {Page,NavController,NavParams,Platform,Refresher} from 'ionic-angular/index';
 import {Http,Response} from 'angular2/http';
 
 import {NgZone} from 'angular2/core';
@@ -21,13 +21,21 @@ export class GroupsPage extends CachedPage {
   constructor(navParams:NavParams,private navController:NavController,private dataService:DataService,cacheService:CacheService,platform:Platform) {
     super(platform,cacheService);
     this.parentGroup = navParams.get('parentGroup');
-    dataService.getGroups().subscribe((groups:Array<any>) => {
+    this.doRefresh(null,false);
+  }
+  doRefresh(refresher:Refresher,reload:boolean = true) {
+    if(reload) {
+      this.dataService.clearGroups();
+    }
+    this.dataService.getGroups().subscribe((groups:Array<any>) => {
       this.groups = groups.filter(group => group.parent_id === this.parentGroup.id);
+      if(reload) {
+        refresher.complete();
+      }
     });
   }
   onClickListen(event:Event,group:any) {
     event.preventDefault();
-    let sounds:Array<any> = this.dataService.getSoundsByGroup(group);
-    this.navController.push(SoundsPage,{sounds:sounds,title:group.title,userInfo:true});
+    this.navController.push(SoundsPage,{group:group,title:group.title,userInfo:true});
   }
 }

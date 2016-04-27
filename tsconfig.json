@@ -3,17 +3,19 @@
     "target": "es5",
     "module": "commonjs",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "sourceMap": true
   },
   "filesGlob": [
-    "**/*.ts",
+    "./app/**/*.ts",
     "app/custom-typings.d.ts",
-    "!node_modules/**/*"
+    "!./node_modules/**/*.ts",
+    "typings/browser.d.ts"
   ],
   "exclude": [
     "node_modules",
-    "typings/main",
-    "typings/main.d.ts"
+    "typings/main.d.ts",
+    "typings/main"
   ],
   "compileOnSave": false,
   "atom": {

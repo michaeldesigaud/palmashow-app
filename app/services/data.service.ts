@@ -25,9 +25,16 @@ export class DataService {
         this.getSounds().subscribe(sounds => this.sounds = sounds);
         this.getUsers().subscribe(users => this.users = users);
     }
+    clearSounds():void {
+        this.sounds = null;
+    }
+    clearGroups():void {
+        this.groups = null;
+    }
     getGroups():Observable<any> {
         if (this.groups) {
             return Observable.create((observer:Observer<any>) => {
+                console.log('Get groups from cache');
                 return observer.next(this.groups);
             });
         }
@@ -48,9 +55,6 @@ export class DataService {
             });
         }
         return this.http.get(HOST+'?cmd=users').map(res => res.json());
-    }
-    getSoundsByGroup(group:any):Array<any> {
-        return this.sounds.filter((sound:any) => sound.group_id === group.id);
     }
     getUserById(id:number):any {
         return this.users.find((user:any) => user.id === id.toString());

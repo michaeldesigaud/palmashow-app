@@ -15,8 +15,7 @@ export class MediaPlayer {
     ngOnInit():void {
         this.mediaService.setMedia(DOM.firstChild(this.el.nativeElement));
     }
-    play(event:Event,sound:any) {
-        event.preventDefault();
+    play(sound:any) {
         sound.playing = false;
         sound.loading = true;
         this.mediaService.play(sound);

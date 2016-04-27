@@ -5,6 +5,9 @@
     <ion-title>{{currentSound ? currentSound.name : title}}</ion-title>
 </ion-navbar>
 <ion-content>
+    <ion-refresher (refresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-list>
         <ion-item *ngFor="#sound of sounds" (click)="onPlay($event,sound)">
             <ion-thumbnail item-left *ngIf="sound.user_id">
@@ -24,6 +27,9 @@
             </div>
             <button secondary (click)="onClickFavoris($event)">
                 <ion-icon name="star"></ion-icon> Favoris
+            </button><br/>
+            <button danger [hidden]="!cacheService.soundInCache(sound.file)" (click)="removeFromCache($event,sound)">
+                <ion-icon name="archive"></ion-icon> En cache
             </button>
             <button clear secondary item-right [hidden]="sound.playing">
                 <ion-icon name='musical-notes'></ion-icon>

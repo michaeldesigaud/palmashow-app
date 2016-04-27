@@ -9,30 +9,65 @@ import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class CacheService {
-    cacheLoaded:Subject<any>;
+    imageCacheLoaded:Subject<any>;
+    soundDownloaded:Subject<any>;
+    soundCache:any;
     constructor(private platform:Platform) {
-        this.cacheLoaded = new Subject<any>();
+        this.imageCacheLoaded = new Subject<any>();
+        this.soundDownloaded = new Subject<any>();
         platform.ready().then(() => {
-            ImgCache.init(() => this.cacheLoaded.next('success'), () => console.log('ImgCache init: error! Check the log for errors'));
-            ImgCache.options.debug = true;
+            this.initImageCache();
+            this.initSoundCache();
         });
     }
-    cacheImages(targets:JQuery):void {
+    initSoundCache():void {
+        this.soundCache = new CordovaFileCache({
+            fs: new CordovaPromiseFS({
+                promise: Promise
+            }),
+            mode:'hash'
+        });
+    }
+    soundInCache(url:string) {
+        return this.soundCache.get(url) !== url;
+    }
+    cacheSound(sound:any):void {
         this.platform.ready().then(() => {
-            targets.each((index:number,target:any) => {
-                ImgCache.isCached($(target).attr('src'), function(path, success) {
-                    if (success) {
-                        // already cached
-                        console.log('Using cached file');
-                        ImgCache.useCachedFile($(target));
-                    } else {
-                        // not there, need to cache the image
-                        ImgCache.cacheFile($(target).attr('src'), function () {
-                            ImgCache.useCachedFile($(target));
-                        });
-                    }
-                });
+            this.soundCache.ready.then(() => {
+                if (!this.soundInCache(sound.file)) {
+                    this.soundCache.add(sound.file);
+                    this.soundCache.download().then(() =>  this.soundDownloaded.next(sound));
+                } else {
+                    this.soundDownloaded.next(sound);
+                }
             });
+        });
+    }
+    removeSound(sound:any,callback:Function):void {
+        this.platform.ready().then(() => {
+            this.soundCache.ready.then(() => {
+                this.soundCache.remove(sound.file).then(callback);
+            });
+        });
+    }
+    initImageCache():void {
+        ImgCache.init(() => this.imageCacheLoaded.next('success'), () => console.log('ImgCache init: error! Check the log for errors'));
+        ImgCache.options.debug = true;
+    }
+    cacheImages(targets:JQuery):void {
+        this.platform.ready().then(() => targets.each((index:number,target:any) => this.readImageCache(target)));
+    }
+    private readImageCache(target:any):void {
+        ImgCache.isCached($(target).attr('src'), function(path, success) {
+            if (success) {
+                // already cached
+                ImgCache.useCachedFile($(target));
+            } else {
+                // not there, need to cache the image
+                ImgCache.cacheFile($(target).attr('src'), function () {
+                    ImgCache.useCachedFile($(target));
+                });
+            }
         });
     }
 }
