@@ -4,15 +4,15 @@
  */
 
 import {Injectable} from 'angular2/core';
-import {Platform,Events} from 'ionic-angular/index';
-
-export const EVENT_CACHE_SOUND_DOWNLOADED:string = 'cache:soundDownloaded';
-export const EVENT_CACHE_IMAGE_LOADED:string = 'cache:imageLoaded';
+import {Platform,Events,Storage,LocalStorage} from 'ionic-angular/index';
+import * as Utils from '../utils/app.utils';
 
 @Injectable()
 export class CacheService {
     soundCache:any;
+    storage:Storage;
     constructor(private platform:Platform,private events:Events) {
+        this.storage = new Storage(LocalStorage);
         platform.ready().then(() => {
             this.initImageCache();
             this.initSoundCache();
@@ -42,37 +42,36 @@ export class CacheService {
             this.soundCache.ready.then(() => {
                 if (!this.soundInCache(sound.file)) {
                     this.soundCache.add(sound.file);
-                    this.soundCache.download().then(() =>  this.events.publish(EVENT_CACHE_SOUND_DOWNLOADED,sound));
+                    this.soundCache.download().then(() =>  this.events.publish(Utils.EVENT_CACHE_SOUND_DOWNLOADED,sound));
                 } else {
-                    this.events.publish(EVENT_CACHE_SOUND_DOWNLOADED,sound);
+                    this.events.publish(Utils.EVENT_CACHE_SOUND_DOWNLOADED,sound);
                 }
             });
         });
     }
     removeSound(sound:any,callback:Function):void {
         this.platform.ready().then(() => {
-            this.soundCache.ready.then(() => {
-                this.soundCache.remove(sound.file).then(callback);
-            });
+            this.soundCache.ready.then(() => this.soundCache.remove(sound.file).then(callback));
         });
     }
     initImageCache():void {
-        ImgCache.init(() => this.events.publish(EVENT_CACHE_IMAGE_LOADED,'success'), () => console.log('ImgCache init: error! Check the log for errors'));
+        ImgCache.init(() => this.events.publish(Utils.EVENT_CACHE_IMAGE_LOADED,'success'), () => console.log('ImgCache init: error! Check the log for errors'));
         ImgCache.options.debug = true;
     }
     cacheImages(targets:JQuery):void {
         this.platform.ready().then(() => targets.each((index:number,target:any) => this.readImageCache(target)));
     }
     private readImageCache(target:any):void {
-        ImgCache.isCached($(target).attr('src'), function(path, success) {
+        ImgCache.isCached($(target).attr('src'), (path, success) => {
             if (success) {
                 // already cached
                 ImgCache.useCachedFile($(target));
             } else {
-                // not there, need to cache the image
-                ImgCache.cacheFile($(target).attr('src'), function () {
-                    ImgCache.useCachedFile($(target));
-                });
+                /*this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_IMAGE).then((value:string) => {
+                    if(value === 'true') {
+                        ImgCache.cacheFile($(target).attr('src'),() => ImgCache.useCachedFile($(target)));
+                    }
+                });*/
             }
         });
     }

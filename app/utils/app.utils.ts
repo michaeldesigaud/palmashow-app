@@ -3,11 +3,16 @@
  * Created by Michael DESIGAUD on 20/04/2016.
  */
 
-export class PathUtils {
-    static getAbsolutePath(filePath:string):string {
-        let path:string = window.location.pathname;
-        path = path.substr(path, path.length - 10);
+export const EVENT_CACHE_SOUND_DOWNLOADED:string = 'cache:soundDownloaded';
+export const EVENT_CACHE_IMAGE_LOADED:string = 'cache:imageLoaded';
 
-        return path+'sounds/'+filePath;
-    }
-}
+export const EVENT_MEDIA_PLAYING:string = 'media:playing';
+export const EVENT_MEDIA_END:string = 'media:end';
+
+export const LOCAL_STORAGE_USE_CACHE_SOUND:string = 'USE_CACHE_SOUND';
+export const LOCAL_STORAGE_USE_CACHE_IMAGE:string = 'USE_CACHE_IMAGE';
+
+export const NB_GROUPS_PER_PAGE:number = 2;
+export const NB_SOUNDS_PER_PAGE:number = 10;
+
+export const SERVER_HOST:string = 'http://bobbysixkiller1987.free.fr/palmashow/data.php';

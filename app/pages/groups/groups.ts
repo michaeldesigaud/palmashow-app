@@ -8,10 +8,10 @@ import {Http,Response} from 'angular2/http';
 
 import {ElementRef} from 'angular2/core';
 import {SoundsPage} from "../sounds/sounds";
-import {DataService,NB_GROUPS_PER_PAGE} from '../../services/data.service';
+import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';
-import {CachedPage} from '../cache/cache-page';
 import {SearchFilterPipe} from '../../pipes/pipes';
+import * as Utils from '../../utils/app.utils';
 
 @Page({
     templateUrl:'build/pages/groups/groups.html',
@@ -25,7 +25,7 @@ export class GroupsPage {
     this.getGroups(() => {});
   }
   getLimit():number {
-    return this.groups && this.groups.length >= NB_GROUPS_PER_PAGE ? this.groups.length + NB_GROUPS_PER_PAGE : NB_GROUPS_PER_PAGE;
+    return this.groups && this.groups.length >= Utils.NB_GROUPS_PER_PAGE ? this.groups.length + Utils.NB_GROUPS_PER_PAGE : Utils.NB_GROUPS_PER_PAGE;
   }
   getGroups(callback:Function):void {
     this.dataService.getChildGroups(this.parentGroup.id,this.getLimit()).subscribe((groups:Array<any>) => {

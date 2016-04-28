@@ -4,14 +4,11 @@
  */
 import {Page,NavParams,NavController,Alert,Events,InfiniteScroll,Storage,LocalStorage} from 'ionic-angular/index';
 import {ViewChild} from 'angular2/core';
-import {PathUtils} from "../../utils/app.utils";
-import {EVENT_MEDIA_END,EVENT_MEDIA_PLAYING} from '../../services/media.service';
-import {DataService,NB_SOUNDS_PER_PAGE} from '../../services/data.service';
-import {CacheService,EVENT_CACHE_SOUND_DOWNLOADED} from '../../services/cache.service';
+import {DataService} from '../../services/data.service';
+import {CacheService} from '../../services/cache.service';
 import {MediaPlayer} from '../../components/player/media-player';
-import {CachedPage} from '../cache/cache-page';
 import {StringDatePipe,SearchFilterPipe} from '../../pipes/pipes';
-import {LOCAL_STORAGE_USE_CACHE} from '../settings/settings';
+import * as Utils from '../../utils/app.utils';
 
 @Page({
     templateUrl:'build/pages/sounds/sounds.html',
@@ -34,17 +31,17 @@ export class SoundsPage {
 
         this.addListeners();
 
-        this.events.subscribe(EVENT_CACHE_SOUND_DOWNLOADED,(data:any) => this.mediaPlayer.play(data[0]));
+        this.events.subscribe(Utils.EVENT_CACHE_SOUND_DOWNLOADED,(data:any) => this.mediaPlayer.play(data[0]));
 
         this.getSounds(() => {});
     }
     onPageDidLeave():void {
-        delete this.events._channels[EVENT_CACHE_SOUND_DOWNLOADED];
-        delete this.events._channels[EVENT_MEDIA_END];
-        delete this.events._channels[EVENT_MEDIA_PLAYING];
+        delete this.events._channels[Utils.EVENT_CACHE_SOUND_DOWNLOADED];
+        delete this.events._channels[Utils.EVENT_MEDIA_END];
+        delete this.events._channels[Utils.EVENT_MEDIA_PLAYING];
     }
     getLimit():number {
-        return this.sounds && this.sounds.length >= NB_SOUNDS_PER_PAGE ? this.sounds.length + NB_SOUNDS_PER_PAGE : NB_SOUNDS_PER_PAGE;
+        return this.sounds && this.sounds.length >= Utils.NB_SOUNDS_PER_PAGE ? this.sounds.length + Utils.NB_SOUNDS_PER_PAGE : Utils.NB_SOUNDS_PER_PAGE;
     }
     getSounds(callback:Function):void {
         this.dataService.getSounds(this.group.id,this.getLimit()).subscribe((sounds:Array<any>) => {
@@ -56,8 +53,8 @@ export class SoundsPage {
         this.getSounds(() => infiniteScroll.complete());
     }
     addListeners():void {
-        this.events.subscribe(EVENT_MEDIA_END,(data:any) => {
-            let sound:any  = data[0];
+        this.events.subscribe(Utils.EVENT_MEDIA_END,(data:any) => {
+            let sound:any = data[0];
             this.sounds.forEach((_sound:any) => {
                 if(_sound.id === sound.id) {
                     sound.playing = false;
@@ -65,7 +62,7 @@ export class SoundsPage {
                 }
             });
         });
-        this.events.subscribe(EVENT_MEDIA_PLAYING,(data:any) => {
+        this.events.subscribe(Utils.EVENT_MEDIA_PLAYING,(data:any) => {
             let sound:any  = data[0];
             this.sounds.forEach((_sound:any) => {
                 if(_sound.id === sound.id) {
@@ -79,11 +76,11 @@ export class SoundsPage {
     }
     onPlay(event:Event,sound:any) {
         event.preventDefault();
-        this.storage.get(LOCAL_STORAGE_USE_CACHE).then((value:string) => {
+        this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value:string) => {
             if(value === 'true') {
                 this.cacheService.cacheSound(sound);
             } else {
-                this.mediaPlayer.play(sound);
+                this.mediaPlayer.play(sound)
             }
         });
 
@@ -118,7 +115,6 @@ export class SoundsPage {
             ]
         });
         this.navController.present(confirm);
-
     }
     getThumbtail(id:number):string {
         let user:any = this.dataService.getUserById(id);

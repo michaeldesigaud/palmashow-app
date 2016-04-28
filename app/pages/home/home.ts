@@ -1,9 +1,9 @@
 import {Page,NavController,Platform,InfiniteScroll,Events} from 'ionic-angular/index';
 import {GroupsPage} from '../groups/groups';
-import {DataService,NB_GROUPS_PER_PAGE} from '../../services/data.service';
-import {CachedPage} from '../cache/cache-page';
-import {CacheService,EVENT_CACHE_IMAGE_LOADED} from '../../services/cache.service';
+import {DataService} from '../../services/data.service';
+import {CacheService} from '../../services/cache.service';
 import {ElementRef} from 'angular2/core';
+import * as Utils from '../../utils/app.utils';
 
 /**
  * home page component
@@ -22,7 +22,7 @@ export class HomePage {
         this.getGroups(() => infiniteScroll.complete());
     }
     getLimit():number {
-        return this.groups && this.groups.length === NB_GROUPS_PER_PAGE ? this.groups.length + NB_GROUPS_PER_PAGE : NB_GROUPS_PER_PAGE;
+        return this.groups && this.groups.length === Utils.NB_GROUPS_PER_PAGE ? this.groups.length + Utils.NB_GROUPS_PER_PAGE : Utils.NB_GROUPS_PER_PAGE;
     }
     getGroups(callback:Function):void {
         this.dataService.getGroups(this.getLimit()).subscribe((groups:Array<any>) => {
@@ -34,7 +34,7 @@ export class HomePage {
         return $(this.elementRef.nativeElement).find('img');
     }
     onPageLoaded():void {
-        this.events.subscribe(EVENT_CACHE_IMAGE_LOADED,() => this.cacheService.cacheImages(this.getImages()));
+        this.events.subscribe(Utils.EVENT_CACHE_IMAGE_LOADED,() => this.cacheService.cacheImages(this.getImages()));
     }
     goToGroupsPage(group:any):void {
         let navTransition = this.navController.push(GroupsPage,{parentGroup:group});

@@ -4,12 +4,9 @@
  */
 
 import {Injectable} from 'angular2/core';
-import {PathUtils} from '../utils/app.utils';
 import {Observable} from "rxjs/Observable";
 import {Events} from 'ionic-angular/index';
-
-export const EVENT_MEDIA_PLAYING:string = 'media:playing';
-export const EVENT_MEDIA_END:string = 'media:end';
+import * as Utils from '../utils/app.utils';
 
 @Injectable()
 export class MediaService {
@@ -19,8 +16,8 @@ export class MediaService {
     constructor(public events:Events) {}
     setMedia(media:any) {
         this.media = media;
-        this.media.addEventListener('playing',() => this.events.publish(EVENT_MEDIA_PLAYING,this.currentSound));
-        this.media.addEventListener('ended', () => this.events.publish(EVENT_MEDIA_END,this.currentSound));
+        this.media.addEventListener('playing',() => this.events.publish(Utils.EVENT_MEDIA_PLAYING,this.currentSound));
+        this.media.addEventListener('ended', () => this.events.publish(Utils.EVENT_MEDIA_END,this.currentSound));
     }
     stop():void {
         this.events.publish('media:end',this.lastSound);

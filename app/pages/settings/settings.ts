@@ -5,25 +5,33 @@
 
 import {Page,Toggle,Storage,LocalStorage,Alert,NavController} from 'ionic-angular/index';
 import {CacheService} from '../../services/cache.service';
-
-export const LOCAL_STORAGE_USE_CACHE:string = 'USE_CACHE';
+import * as Utils from '../../utils/app.utils';
 
 @Page({
     templateUrl:'build/pages/settings/settings.html',
 })
 export class SettingsPage {
     private storage:Storage;
-    private useCache:boolean = true;
-    constructor(private cacheService:CacheService,private navController:NavController) {
+    private useCacheSound:boolean = true;
+    private useCacheImage:boolean = true;
+    constructor(private navController:NavController,private cacheService:CacheService) {
         this.storage = new Storage(LocalStorage);
-        this.storage.get(LOCAL_STORAGE_USE_CACHE).then((value) => {
+        this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value) => {
             if(value) {
-                this.useCache = value;
+                this.useCacheSound = value;
+            }
+        });
+        this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_IMAGE).then((value) => {
+            if(value) {
+                this.useCacheImage = value;
             }
         });
     }
-    onChangeCache(toggle:Toggle):void {
-        this.storage.set(LOCAL_STORAGE_USE_CACHE,toggle.checked);
+    onChangeToggleSound(toggle:Toggle):void {
+        this.storage.set(Utils.LOCAL_STORAGE_USE_CACHE_SOUND,toggle.checked);
+    }
+    onChangeToggleImage(toggle:Toggle):void {
+        this.storage.set(Utils.LOCAL_STORAGE_USE_CACHE_IMAGE,toggle.checked);
     }
     onClickDeleteSounds(event:Event):void {
         event.preventDefault();

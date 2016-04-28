@@ -8,18 +8,22 @@
     <ion-list-header>Cache</ion-list-header>
     <ion-list>
         <ion-item>
-            <ion-label>Copier les sons en cache à la lecture</ion-label>
-            <ion-toggle (change)="onChangeCache($event)" [(ngModel)]="useCache"></ion-toggle>
+            <ion-label>Sons en cache à la lecture</ion-label>
+            <ion-toggle (change)="onChangeToggleSound($event)" [(ngModel)]="useCacheSound"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>Images en cache à l'affichage</ion-label>
+            <ion-toggle (change)="onChangeToggleImage($event)" [(ngModel)]="useCacheImage"></ion-toggle>
         </ion-item>
         <ion-item>
             <h2>Supprimer les sons</h2>
             <p>Supprimer tous les sons du cache</p>
-            <button danger item-right (click)="onClickDeleteSounds($event)"><ion-icon name="musical-notes"></ion-icon> Supprimer</button>
+            <button danger (click)="onClickDeleteSounds($event)"><ion-icon name="musical-notes"></ion-icon> Supprimer</button>
         </ion-item>
         <ion-item>
             <h2>Supprimer les images</h2>
             <p>Supprimer toutes les images du cache</p>
-            <button danger item-right (click)="onClickDeleteImages($event)"><ion-icon name="image"></ion-icon> Supprimer</button>
+            <button danger (click)="onClickDeleteImages($event)"><ion-icon name="image"></ion-icon> Supprimer</button>
         </ion-item>
     </ion-list>
 </ion-content>
