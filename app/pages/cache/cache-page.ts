@@ -9,8 +9,7 @@ import {CacheService} from '../../services/cache.service';
 export abstract class CachedPage {
     constructor(private platform:Platform,protected cacheService:CacheService) {}
     onPageLoaded():void {
-        this.platform.ready().then(() => {
-            this.cacheService.cacheImages($('img'));
-        });
+        console.log('Page loaded');
+        //this.platform.ready().then(() => this.cacheService.cacheImages($('img')));
     }
 }

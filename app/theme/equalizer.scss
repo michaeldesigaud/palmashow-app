@@ -1,4 +1,4 @@
-$size: 10vmin;
+$size: 20vmin;
 
 // When $size is 40px, $max is 14px, $width is 4px, $margin is 1px
 
@@ -317,10 +317,6 @@ $fourteen: $max;
   margin-left: -($size / 1.7);
   width: $size;
   height: $size;
-
-  &:hover {
-    background-color: white;
-  }
 }
 
 *,

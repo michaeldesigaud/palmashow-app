@@ -5,9 +5,10 @@
 interface ImgCache {
     options:any;
     init(success:Function,error:Function):void;
-    isCached(src:string,func:Function);
-    useCachedFile(target:any);
-    cacheFile(src:string,func:Function);
+    isCached(src:string,func:Function):void;
+    useCachedFile(target:any):void;
+    cacheFile(src:string,func:Function):void;
+    clearCache(success:Function,error?:Function):void;
 }
 declare var ImgCache:ImgCache;
 

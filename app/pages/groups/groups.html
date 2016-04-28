@@ -5,11 +5,9 @@
     <ion-title>{{parentGroup.title}}</ion-title>
 </ion-navbar>
 <ion-content>
-    <ion-refresher (refresh)="doRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-    <ion-card *ngFor="#group of groups" (click)="onClickListen($event,group)">
-        <img src="{{group.imageName}}">
+    <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
+    <ion-card *ngFor="#group of groups | searchFilter:{title:searchQuery}" (click)="onClickListen($event,group)">
+        <img src="{{group.imageName}}" />
         <ion-card-content>
             <ion-card-title>{{group.title}}</ion-card-title>
             <p>{{group.description}}</p>
@@ -22,4 +20,10 @@
             </ion-col>
         </ion-row>
     </ion-card>
+    <ion-infinite-scroll (infinite)="doInfinite($event)">
+        <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="Chargement des données...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>

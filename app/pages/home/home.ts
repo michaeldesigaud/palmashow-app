@@ -1,8 +1,9 @@
-import {Page,NavController,Platform,Refresher} from 'ionic-angular/index';
+import {Page,NavController,Platform,InfiniteScroll,Events} from 'ionic-angular/index';
 import {GroupsPage} from '../groups/groups';
-import {DataService} from '../../services/data.service';
+import {DataService,NB_GROUPS_PER_PAGE} from '../../services/data.service';
 import {CachedPage} from '../cache/cache-page';
-import {CacheService} from '../../services/cache.service';
+import {CacheService,EVENT_CACHE_IMAGE_LOADED} from '../../services/cache.service';
+import {ElementRef} from 'angular2/core';
 
 /**
  * home page component
@@ -12,28 +13,34 @@ import {CacheService} from '../../services/cache.service';
 @Page({
     templateUrl:'build/pages/home/home.html'
 })
-export class HomePage{
+export class HomePage {
     groups:Array<any>;
-    constructor(private navController:NavController,private dataService:DataService,private cacheService:CacheService){
-        this.doRefresh(null,false);
+    constructor(private navController:NavController,private dataService:DataService,private cacheService:CacheService,private events:Events,private elementRef:ElementRef){
+        this.getGroups(() => {});
     }
-    doRefresh(refresher:Refresher,reload:boolean = true) {
-        if(reload) {
-            this.dataService.removeGroups();
-        }
-        this.dataService.getGroups().subscribe((groups:Array<any>) => {
-            this.groups = groups.filter(group => !group.parent_id);
-            if(reload) {
-                refresher.complete();
-            }
+    doInfinite(infiniteScroll:InfiniteScroll) {
+        this.getGroups(() => infiniteScroll.complete());
+    }
+    getLimit():number {
+        return this.groups && this.groups.length === NB_GROUPS_PER_PAGE ? this.groups.length + NB_GROUPS_PER_PAGE : NB_GROUPS_PER_PAGE;
+    }
+    getGroups(callback:Function):void {
+        this.dataService.getGroups(this.getLimit()).subscribe((groups:Array<any>) => {
+            this.groups = groups;
+            callback();
         });
+    }
+    getImages():any {
+        return $(this.elementRef.nativeElement).find('img');
     }
     onPageLoaded():void {
-        this.cacheService.imageCacheLoaded.subscribe(() => {
-            this.cacheService.cacheImages($('img'));
-        });
+        this.events.subscribe(EVENT_CACHE_IMAGE_LOADED,() => this.cacheService.cacheImages(this.getImages()));
     }
     goToGroupsPage(group:any):void {
-        this.navController.push(GroupsPage,{parentGroup:group});
+        let navTransition = this.navController.push(GroupsPage,{parentGroup:group});
+        navTransition.then(() => {
+            let elementRef:ElementRef = this.navController.getActive().contentRef();
+            this.cacheService.cacheImages($(elementRef.nativeElement).find('img'));
+        });
     }
 }

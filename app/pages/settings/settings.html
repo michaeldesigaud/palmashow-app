@@ -1,0 +1,25 @@
+<ion-navbar *navbar class="show-navbar" primary>
+    <button menuToggle>
+        <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>Settings</ion-title>
+</ion-navbar>
+<ion-content>
+    <ion-list-header>Cache</ion-list-header>
+    <ion-list>
+        <ion-item>
+            <ion-label>Copier les sons en cache à la lecture</ion-label>
+            <ion-toggle (change)="onChangeCache($event)" [(ngModel)]="useCache"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <h2>Supprimer les sons</h2>
+            <p>Supprimer tous les sons du cache</p>
+            <button danger item-right (click)="onClickDeleteSounds($event)"><ion-icon name="musical-notes"></ion-icon> Supprimer</button>
+        </ion-item>
+        <ion-item>
+            <h2>Supprimer les images</h2>
+            <p>Supprimer toutes les images du cache</p>
+            <button danger item-right (click)="onClickDeleteImages($event)"><ion-icon name="image"></ion-icon> Supprimer</button>
+        </ion-item>
+    </ion-list>
+</ion-content>

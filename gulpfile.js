@@ -60,9 +60,10 @@ gulp.task('scripts',function(){
         'node_modules/es6-shim/es6-shim.min.js',
         'node_modules/imgcache.js/js/imgcache.js',
         'node_modules/angular2/bundles/angular2-polyfills.js',
-        'node_modules/jquery/dist/jquery.js',
+        'node_modules/jquery/dist/jquery.min.js',
         'node_modules/cordova-promise-fs/dist/CordovaPromiseFS.js',
-        'node_modules/cordova-file-cache/dist/CordovaFileCache.js'
+        'node_modules/cordova-file-cache/dist/CordovaFileCache.js',
+        'node_modules/moment/min/moment.min.js'
     ]
     });
 });

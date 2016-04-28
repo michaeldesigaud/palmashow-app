@@ -1,4 +1,4 @@
-<ion-menu #menu [content]="content" id="leftMenu" side="left">
+<ion-menu #menu [content]="content" type="push" id="leftMenu" side="left">
     <ion-toolbar secondary>
         <ion-title>Menu</ion-title>
     </ion-toolbar>
@@ -11,5 +11,5 @@
     </ion-content>
 </ion-menu>
 <ion-view>
-    <ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>
+    <ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="true"></ion-nav>
 </ion-view>
