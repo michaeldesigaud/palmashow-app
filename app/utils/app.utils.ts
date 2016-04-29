@@ -11,6 +11,7 @@ export const EVENT_MEDIA_END:string = 'media:end';
 
 export const LOCAL_STORAGE_USE_CACHE_SOUND:string = 'USE_CACHE_SOUND';
 export const LOCAL_STORAGE_USE_CACHE_IMAGE:string = 'USE_CACHE_IMAGE';
+export const LOCAL_STORAGE_BOOKMARK:string = 'BOOKMARKS';
 
 export const RINGTONE_DEFAULT_NAME:string = 'palmashow_';
 

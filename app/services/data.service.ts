@@ -4,7 +4,7 @@
  */
 
 import {Injectable} from 'angular2/core';
-import {Http,Jsonp} from 'angular2/http';
+import {Http,Headers} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
 import {Subscription} from 'rxjs/Subscription';
@@ -28,6 +28,11 @@ export class DataService {
     }
     getSounds(groupId:string,limit:number):Observable<any> {
         return this.http.get(Utils.SERVER_HOST+'?cmd=sounds&group_id='+groupId+'&limit='+limit).map(res => res.json());
+    }
+    getSoundsByIds(ids:Array<string>,limit:number):Observable<any> {
+        let headers:Headers = new Headers();
+        //headers.set('Content-Type','application/json');
+        return this.http.post(Utils.SERVER_HOST+'?cmd=soundsByIds&limit='+limit,JSON.stringify(ids)).map(res => res.json());
     }
     getUsers():Observable<any> {
         if (this.users) {

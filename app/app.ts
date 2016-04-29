@@ -12,6 +12,8 @@ import  * as Utils from './utils/app.utils';
 
 import 'es6-shim';
 import 'rxjs/add/operator/map';
+import {SoundsPage} from "./pages/sounds/sounds";
+import {LOCAL_STORAGE_BOOKMARK} from "./utils/app.utils";
 
 @App({
   templateUrl: 'build/app.html',
@@ -54,6 +56,15 @@ export class MyApp {
         this.storage.set(Utils.LOCAL_STORAGE_USE_CACHE_IMAGE,true);
       }
     });
+  }
+  openBookmarkPage():void {
+    this.storage.getJson(LOCAL_STORAGE_BOOKMARK).then((ids:Array<string>) => {
+      if(ids && $.isArray(ids) && ids.length > 0) {
+        let nav:NavController = this.app.getComponent('nav');
+        nav.setRoot(SoundsPage,{title:'Favoris',ids:ids});
+      }
+    });
+    this.app.getComponent('leftMenu').close();
   }
   openPage(page:any):void {
     // navigate to the new page if it is not the current page

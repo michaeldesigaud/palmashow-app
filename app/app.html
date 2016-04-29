@@ -5,7 +5,7 @@
     <ion-content>
         <ion-list>
             <button ion-item (click)="openPage(page)" *ngFor="#page of pages"><ion-icon name="{{page.icon}}"></ion-icon> {{page.label}}</button>
-            <button ion-item><ion-icon name="star"></ion-icon> Favoris</button>
+            <button ion-item (click)="openBookmarkPage()"><ion-icon name="star"></ion-icon> Favoris</button>
             <button ion-item menuClose="leftMenu" detail-none><ion-icon name="close"></ion-icon> Close</button>
         </ion-list>
     </ion-content>

@@ -1,5 +1,8 @@
 <ion-navbar *navbar class="show-navbar" primary>
-    <ion-title>{{currentSound ? currentSound.name : title}}</ion-title>
+    <button menuToggle *ngIf="ids">
+        <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>{{title}}</ion-title>
 </ion-navbar>
 <ion-content class="has-header">
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>

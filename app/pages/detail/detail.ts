@@ -23,6 +23,7 @@ export class Detail {
     private storage:Storage;
     private saveType:string;
     private alertOptions:any = {title:'Exporter le son',subTitle:'Suavegarder le son en tant que sonnerie ou notification'};
+    private bookmarked:boolean = false;
     constructor(private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,navParams:NavParams) {
         this.storage = new Storage(LocalStorage);
         this.sound = navParams.get('sound');
@@ -31,6 +32,8 @@ export class Detail {
         this.sound.simpleName = this.sound.file.substring(this.sound.file.lastIndexOf('/')+1);
 
         this.addListeners();
+
+        this.isBookmarked();
     }
     getThumbtail(id:number):string {
         let user:any = this.dataService.getUserById(id);
@@ -71,9 +74,37 @@ export class Detail {
         delete this.events._channels[Utils.EVENT_MEDIA_END];
         delete this.events._channels[Utils.EVENT_MEDIA_PLAYING];
     }
-    onClickFavoris(event:Event):void {
+    isBookmarked():void {
+        this.storage.getJson(Utils.LOCAL_STORAGE_BOOKMARK).then((value:Array<string>) => {
+            if(value && $.isArray(value) && value.indexOf(this.sound.id) !== -1) {
+                this.bookmarked = true;
+            }
+        });
+    }
+    onClickDeleteBookmark(event:Event):void {
         event.preventDefault();
-        console.log('Adding sound to favoris',this.sound);
+        this.storage.getJson(Utils.LOCAL_STORAGE_BOOKMARK).then((value:Array<string>) => {
+            if(value && $.isArray(value) && value.indexOf(this.sound.id) !== -1) {
+                value = value.filter((id:string) => this.sound.id !== id);
+                this.storage.setJson(Utils.LOCAL_STORAGE_BOOKMARK,value);
+                this.bookmarked = false;
+            }
+        });
+    }
+    onClickBookmark(event:Event):void {
+        event.preventDefault();
+
+        this.storage.getJson(Utils.LOCAL_STORAGE_BOOKMARK).then((value:Array<string>) => {
+            if(!value || !$.isArray(value)) {
+                value = [this.sound.id];
+            } else {
+                if(value.indexOf(this.sound.id) === -1) {
+                    value.push(this.sound.id);
+                }
+            }
+            this.storage.setJson(Utils.LOCAL_STORAGE_BOOKMARK,value);
+            this.bookmarked = true;
+        });
     }
     onRedirectYoutube(event:Event):void {
         event.preventDefault();
