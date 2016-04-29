@@ -26,7 +26,7 @@ export class CacheService {
             mode:'hash'
         });
     }
-    soundInCache(url:string) {
+    soundInCache(url:string):boolean {
         return this.soundCache.get(url) !== url;
     }
     clearCacheImage(callback:Function):void {
@@ -37,14 +37,14 @@ export class CacheService {
             this.soundCache.ready.then(() => this.soundCache.clear().then(callback));
         });
     }
-    cacheSound(sound:any):void {
+    cacheSound(sound:any,callback:Function):void {
         this.platform.ready().then(() => {
             this.soundCache.ready.then(() => {
                 if (!this.soundInCache(sound.file)) {
                     this.soundCache.add(sound.file);
-                    this.soundCache.download().then(() =>  this.events.publish(Utils.EVENT_CACHE_SOUND_DOWNLOADED,sound));
+                    this.soundCache.download().then(callback);
                 } else {
-                    this.events.publish(Utils.EVENT_CACHE_SOUND_DOWNLOADED,sound);
+                    callback();
                 }
             });
         });
@@ -67,11 +67,11 @@ export class CacheService {
                 // already cached
                 ImgCache.useCachedFile($(target));
             } else {
-                /*this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_IMAGE).then((value:string) => {
+                this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_IMAGE).then((value:string) => {
                     if(value === 'true') {
                         ImgCache.cacheFile($(target).attr('src'),() => ImgCache.useCachedFile($(target)));
                     }
-                });*/
+                });
             }
         });
     }

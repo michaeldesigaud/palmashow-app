@@ -20,7 +20,7 @@ import * as Utils from '../../utils/app.utils';
 export class GroupsPage {
   groups:Array<any>;
   parentGroup:any;
-  constructor(navParams:NavParams,private navController:NavController,private dataService:DataService,private cacheService:CacheService) {
+  constructor(navParams:NavParams,private navController:NavController,private dataService:DataService,private cacheService:CacheService,private elementRef:ElementRef) {
     this.parentGroup = navParams.get('parentGroup');
     this.getGroups(() => {});
   }
@@ -30,6 +30,7 @@ export class GroupsPage {
   getGroups(callback:Function):void {
     this.dataService.getChildGroups(this.parentGroup.id,this.getLimit()).subscribe((groups:Array<any>) => {
       this.groups = groups;
+      this.cacheService.cacheImages($(this.elementRef.nativeElement).find('img'));
       callback();
     });
   }

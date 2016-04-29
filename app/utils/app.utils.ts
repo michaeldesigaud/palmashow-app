@@ -12,7 +12,9 @@ export const EVENT_MEDIA_END:string = 'media:end';
 export const LOCAL_STORAGE_USE_CACHE_SOUND:string = 'USE_CACHE_SOUND';
 export const LOCAL_STORAGE_USE_CACHE_IMAGE:string = 'USE_CACHE_IMAGE';
 
+export const RINGTONE_DEFAULT_NAME:string = 'palmashow_';
+
 export const NB_GROUPS_PER_PAGE:number = 2;
 export const NB_SOUNDS_PER_PAGE:number = 10;
 
-export const SERVER_HOST:string = 'http://bobbysixkiller1987.free.fr/palmashow/data.php';
+export const SERVER_HOST:string = 'server_url';

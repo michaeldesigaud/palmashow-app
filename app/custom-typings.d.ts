@@ -2,6 +2,16 @@
  * Custom typings
  * Created by Michael DESIGAUD on 26/04/2016.
  */
+
+interface Window {
+    ringtone:any;
+    resolveLocalFileSystemURL(uri:string,success:Function,error?:Function):void
+}
+
+interface Cordova {
+    file:any;
+}
+
 interface ImgCache {
     options:any;
     init(success:Function,error:Function):void;

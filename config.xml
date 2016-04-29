@@ -26,6 +26,7 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="14"/>
   <preference name="BackupWebStorage" value="none"/>
+  <preference name="AndroidPersistentFileLocation" value="Internal" />
   <preference name="AndroidPersistentFileLocation" value="Compatibility" />
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
@@ -50,4 +51,5 @@
   <plugin name="ionic-plugin-keyboard" spec="~2.0.1"/>
   <plugin name="cordova-plugin-file" spec="~4.1.1"/>
   <plugin name="cordova-plugin-file-transfer" spec="~1.5.1" />
+  <plugin name="com.hiraqui.ringtone" spec="0.6.1" />
 </widget>

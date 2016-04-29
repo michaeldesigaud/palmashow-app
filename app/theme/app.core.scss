@@ -9,13 +9,12 @@
 @import 'equalizer';
 
 .spinner {
-  width: 70px;
   text-align: center;
 }
 
 .spinner > div {
-  width: 10px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
   background-color: #69BB7B;
 
   border-radius: 100%;
