@@ -5,7 +5,7 @@
 
 import {Injectable} from 'angular2/core';
 import {Observable} from "rxjs/Observable";
-import {Events} from 'ionic-angular/index';
+import {Events,Platform} from 'ionic-angular/index';
 import * as Utils from '../utils/app.utils';
 import {CacheService} from './cache.service';
 
@@ -14,7 +14,7 @@ export class MediaService {
     media:any;
     lastSound:any;
     currentSound:any;
-    constructor(public events:Events,private cacheService:CacheService) {}
+    constructor(private events:Events,private cacheService:CacheService,private platform:Platform) {}
     setMedia(media:any) {
         this.media = media;
         this.media.addEventListener('playing',() => this.events.publish(Utils.EVENT_MEDIA_PLAYING,this.currentSound));
@@ -33,11 +33,21 @@ export class MediaService {
         }
         this.currentSound = newSound;
 
-        if(!this.cacheService.soundInCache(newSound.file)) {
-            this.media.src = newSound.file;
+        if(this.platform.is('cordova')) {
+            console.log('cordova');
+            if(!this.cacheService.soundInCache(newSound.file)) {
+                this.media.src = newSound.file;
+            } else {
+                console.log('Playing sound from cache','file:///'+cordova.file.externalRootDirectory+this.cacheService.soundCache.toPath(newSound.file));
+                this.media.src = cordova.file.externalRootDirectory+this.cacheService.soundCache.toPath(newSound.file);
+            }
         } else {
-            console.log('Playing sound from cache',this.cacheService.soundCache.toInternalURL(newSound.file));
-            this.media.src = this.cacheService.soundCache.toInternalURL(newSound.file);
+            if(!this.cacheService.soundInCache(newSound.file)) {
+                this.media.src = newSound.file;
+            } else {
+                console.log('Playing sound from cache',this.cacheService.soundCache.toInternalURL(newSound.file));
+                this.media.src = this.cacheService.soundCache.toInternalURL(newSound.file);
+            }
         }
 
         this.media.load();

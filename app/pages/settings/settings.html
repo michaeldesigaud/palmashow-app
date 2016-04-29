@@ -18,6 +18,7 @@
         <ion-item>
             <h2>Supprimer les sons</h2>
             <p>Supprimer tous les sons du cache</p>
+            <ion-badge item-right>{{nbSoundsInCache}}</ion-badge>
             <button danger (click)="onClickDeleteSounds($event)"><ion-icon name="musical-notes"></ion-icon> Supprimer</button>
         </ion-item>
         <ion-item>

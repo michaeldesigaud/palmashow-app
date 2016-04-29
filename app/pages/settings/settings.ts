@@ -14,6 +14,7 @@ export class SettingsPage {
     private storage:Storage;
     private useCacheSound:boolean = true;
     private useCacheImage:boolean = true;
+    private nbSoundsInCache:number = 0;
     constructor(private navController:NavController,private cacheService:CacheService) {
         this.storage = new Storage(LocalStorage);
         this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value) => {
@@ -26,6 +27,7 @@ export class SettingsPage {
                 this.useCacheImage = value;
             }
         });
+        this.cacheService.soundCache.list().then((list) => this.nbSoundsInCache = list.length);
     }
     onChangeToggleSound(toggle:Toggle):void {
         this.storage.set(Utils.LOCAL_STORAGE_USE_CACHE_SOUND,toggle.checked);

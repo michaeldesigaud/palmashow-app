@@ -8,7 +8,7 @@ import {DOM} from "angular2/src/platform/dom/dom_adapter";
  */
 @Component({
     selector:'media-player',
-    template:'<audio controls="controls" preload="none" id="mediaPlayer"></audio>'
+    template:'<audio controls="controls" preload="auto" id="mediaPlayer"></audio>'
 })
 export class MediaPlayer {
     constructor(private mediaService:MediaService,private el:ElementRef) {}
