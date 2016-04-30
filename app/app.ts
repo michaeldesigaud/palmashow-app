@@ -21,13 +21,18 @@ import {LOCAL_STORAGE_BOOKMARK} from "./utils/app.utils";
   config: {}
 })
 export class MyApp {
-  private rootPage:any = HomePage;
+  private rootPage:any;
   private pages:Array<any>;
   private storage:Storage;
   constructor(private app:IonicApp,private dataService:DataService,cacheService:CacheService,platform: Platform) {
     this.pages = [{label: 'Accueil', component: HomePage, icon: 'home'},{label: 'Paramètres', component: SettingsPage, icon: 'settings'}];
 
     this.initLocalStorage();
+
+    this.dataService.initConfig(() => {
+      let nav:NavController = this.app.getComponent('nav');
+      this.rootPage = HomePage;
+    });
 
     platform.ready().then(() => {
       StatusBar.styleDefault();

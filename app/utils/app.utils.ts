@@ -18,4 +18,12 @@ export const RINGTONE_DEFAULT_NAME:string = 'palmashow_';
 export const NB_GROUPS_PER_PAGE:number = 2;
 export const NB_SOUNDS_PER_PAGE:number = 10;
 
-export const SERVER_HOST:string = 'server_url';
+export const CONFIG_SERVER_URL:string = 'SERVER_URL';
+export const CONFIG_CHILD_GROUPS_PATH:string = 'CHILD_GROUPS_PATH';
+export const CONFIG_PARENT_GROUPS_PATH:string = 'PARENT_GROUPS_PATH';
+export const CONFIG_SOUNDS_PATH:string = 'SOUNDS_PATH';
+export const CONFIG_SOUNDS_BY_IDS_PATH:string = 'SOUNDS_BY_IDS_PATH';
+export const CONFIG_USERS_PATH:string = 'CONFIG_USERS_PATH';
+export const CONFIG_PATH:string = '?cmd=config';
+
+export const DEFAULT_SERVER_HOST:string = 'server_url';
