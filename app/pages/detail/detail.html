@@ -15,7 +15,7 @@
             <ion-label>Exporter en sonnerie</ion-label>
             <button outline primary item-right (click)="saveAs($event,'ringtone')"><ion-icon name="download"></ion-icon> Exporter</button>
         </ion-item>
-        <ion-item *ngIf="canRingtone()">
+        <ion-item *ngIf="canNotif()">
             <ion-label>Exporter en notification</ion-label>
             <button outline primary item-right (click)="saveAs($event,'notification')"><ion-icon name="download"></ion-icon> Exporter</button>
         </ion-item>
@@ -43,6 +43,3 @@
         <div class="bounce3"></div>
     </div>
 </ion-content>
-<ion-toolbar position="bottom">
-    <media-player></media-player>
-</ion-toolbar>

@@ -27,6 +27,8 @@ export class SettingsPage {
                 this.useCacheImage = value;
             }
         });
+    }
+    onPageLoaded():void {
         this.cacheService.soundCache.list().then((list) => this.nbSoundsInCache = list.length);
     }
     onChangeToggleSound(toggle:Toggle):void {

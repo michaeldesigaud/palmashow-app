@@ -15,8 +15,8 @@ export const LOCAL_STORAGE_BOOKMARK:string = 'BOOKMARKS';
 
 export const RINGTONE_DEFAULT_NAME:string = 'palmashow_';
 
-export const NB_GROUPS_PER_PAGE:number = 2;
-export const NB_SOUNDS_PER_PAGE:number = 10;
+export const NB_GROUPS_PER_PAGE:number = 3;
+export const NB_SOUNDS_PER_PAGE:number = 30;
 
 export const CONFIG_SERVER_URL:string = 'SERVER_URL';
 export const CONFIG_CHILD_GROUPS_PATH:string = 'CHILD_GROUPS_PATH';

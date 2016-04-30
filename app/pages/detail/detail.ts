@@ -3,28 +3,26 @@
  * Created by Michael DESIGAUD on 29/04/2016.
  */
 
-import {Page,NavParams,Storage,LocalStorage,Events,Alert,Platform} from 'ionic-angular/index';
-import {MediaPlayer} from '../../components/player/media-player';
+import {Page,NavParams,Storage,LocalStorage,Events,Alert,Platform,IonicApp} from 'ionic-angular/index';
 import {DataService} from '../../services/data.service';
 import {StringDatePipe} from '../../pipes/pipes';
 import {CacheService} from '../../services/cache.service';
 import * as Utils from '../../utils/app.utils';
 import {NavController} from "ionic-angular/index";
-import {ViewChild} from 'angular2/core';
+import {Inject,forwardRef} from 'angular2/core';
+import {MyApp} from '../../app';
 
 @Page({
     templateUrl:'build/pages/detail/detail.html',
-    directives:[MediaPlayer],
     pipes:[StringDatePipe]
 })
 export class Detail {
-    @ViewChild(MediaPlayer) private mediaPlayer:MediaPlayer;
     private sound:any;
     private storage:Storage;
     private saveType:string;
     private alertOptions:any = {title:'Exporter le son',subTitle:'Suavegarder le son en tant que sonnerie ou notification'};
     private bookmarked:boolean = false;
-    constructor(private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams) {
+    constructor(@Inject(forwardRef(() => MyApp)) private _parent:MyApp,private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams) {
         this.storage = new Storage(LocalStorage);
         this.sound = navParams.get('sound');
         this.sound.loading = true;
@@ -43,8 +41,13 @@ export class Detail {
         let user:any = this.dataService.getUserById(id);
         return user.name;
     }
-    canRingtone():boolean {
+    canNotif():boolean {
         return !!window.ringtone;
+    }
+    canRingtone():boolean {
+        return this.canNotif()
+            && this.platform.is('mobile')
+            && !this.platform.is('tablet');
     }
     addListeners():void {
         this.events.subscribe(Utils.EVENT_MEDIA_END,(data:any) => {
@@ -62,10 +65,10 @@ export class Detail {
       this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value:string) => {
             if(value === 'true') {
                 this.cacheService.cacheSound(this.sound,()=> {
-                    this.mediaPlayer.play(this.sound);
+                    this._parent.mediaPlayer.play(this.sound);
                 });
             } else {
-                this.mediaPlayer.play(this.sound)
+                this._parent.mediaPlayer.play(this.sound)
             }
         });
     }
@@ -143,7 +146,7 @@ export class Detail {
                         this.cacheService.getCachedSoundPath(this.sound));
                 }
                 if(data === 'facebook') {
-                    window.plugins.socialsharing.shareViaFacebook(message,this.cacheService.getCachedSoundPath(this.sound));
+                    window.plugins.socialsharing.shareViaFacebook(message);
                 }
             }
         });

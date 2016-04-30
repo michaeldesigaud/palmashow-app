@@ -1,4 +1,4 @@
-import {App, Platform,IonicApp,LocalStorage,Storage} from 'ionic-angular';
+import {App, Platform,IonicApp,LocalStorage,Storage,Alert} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {GroupsPage} from './pages/groups/groups';
 import {MediaService} from './services/media.service';
@@ -7,36 +7,41 @@ import {CacheService} from './services/cache.service';
 import {HomePage} from './pages/home/home';
 import {SettingsPage} from './pages/settings/settings';
 import {NavController} from 'ionic-angular/index';
-import {Type} from 'angular2/core';
+import {Type,ViewChild} from 'angular2/core';
 import  * as Utils from './utils/app.utils';
 
 import 'es6-shim';
 import 'rxjs/add/operator/map';
 import {SoundsPage} from "./pages/sounds/sounds";
 import {LOCAL_STORAGE_BOOKMARK} from "./utils/app.utils";
+import {MediaPlayer} from './components/player/media-player';
 
 @App({
   templateUrl: 'build/app.html',
   providers:[MediaService,DataService,CacheService],
+  directives:[MediaPlayer],
   config: {}
 })
 export class MyApp {
+  @ViewChild(MediaPlayer) mediaPlayer:MediaPlayer;
   private rootPage:any;
   private pages:Array<any>;
   private storage:Storage;
+  private nbBookmarked:number = 0;
   constructor(private app:IonicApp,private dataService:DataService,cacheService:CacheService,platform: Platform) {
     this.pages = [{label: 'Accueil', component: HomePage, icon: 'home'},{label: 'Paramètres', component: SettingsPage, icon: 'settings'}];
 
     this.initLocalStorage();
 
     this.dataService.initConfig(() => {
+      this.loadMenuPages();
       let nav:NavController = this.app.getComponent('nav');
       this.rootPage = HomePage;
     });
 
     platform.ready().then(() => {
-      StatusBar.styleDefault();
-      this.loadMenuPages();
+      console.log('Platform',platform);
+      StatusBar.styleDefault()
     });
   }
   loadMenuPages():void {
@@ -64,9 +69,16 @@ export class MyApp {
   }
   openBookmarkPage():void {
     this.storage.getJson(LOCAL_STORAGE_BOOKMARK).then((ids:Array<string>) => {
+      let nav:NavController = this.app.getComponent('nav');
       if(ids && $.isArray(ids) && ids.length > 0) {
-        let nav:NavController = this.app.getComponent('nav');
         nav.setRoot(SoundsPage,{title:'Favoris',ids:ids});
+      } else {
+        let alert = Alert.create({
+          title: 'Favoris',
+          subTitle: 'Aucun favoris enregistré',
+          buttons: ['Ok']
+        });
+        nav.present(alert);
       }
     });
     this.app.getComponent('leftMenu').close();
