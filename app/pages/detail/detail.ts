@@ -3,7 +3,7 @@
  * Created by Michael DESIGAUD on 29/04/2016.
  */
 
-import {Page,NavParams,Storage,LocalStorage,Events,Alert} from 'ionic-angular/index';
+import {Page,NavParams,Storage,LocalStorage,Events,Alert,Platform} from 'ionic-angular/index';
 import {MediaPlayer} from '../../components/player/media-player';
 import {DataService} from '../../services/data.service';
 import {StringDatePipe} from '../../pipes/pipes';
@@ -24,7 +24,7 @@ export class Detail {
     private saveType:string;
     private alertOptions:any = {title:'Exporter le son',subTitle:'Suavegarder le son en tant que sonnerie ou notification'};
     private bookmarked:boolean = false;
-    constructor(private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,navParams:NavParams) {
+    constructor(private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams) {
         this.storage = new Storage(LocalStorage);
         this.sound = navParams.get('sound');
         this.sound.loading = true;
@@ -109,6 +109,49 @@ export class Detail {
     onRedirectYoutube(event:Event):void {
         event.preventDefault();
         window.open(this.sound.youtube_url,'_blank');
+    }
+    createShareAlert():Alert {
+        let alert = Alert.create();
+        alert.setTitle('Partager un son');
+        alert.addInput({
+            type: 'radio',
+            label: 'Twitter',
+            value: 'twitter'
+        });
+        alert.addInput({
+            type: 'radio',
+            label: 'Facebook',
+            value: 'facebook'
+        });
+        alert.addInput({
+            type: 'radio',
+            label: 'Email',
+            value: 'email'
+        });
+        alert.addButton('Annuler');
+        alert.addButton({
+            text: 'Ok',
+            handler: data => {
+                let fileUri:string = cordova.file.externalRootDirectory+this.cacheService.soundCache.toPath(this.sound.file);
+                let message:string = 'Enorme ce son de l\'application Palmashow Soundboard !';
+                if(data === 'twitter') {
+                    window.plugins.socialsharing.shareViaTwitter(message+this.sound.file);
+                }
+                if(data === 'email') {
+                    console.log('Attachment file',fileUri);
+                    window.plugins.socialsharing.shareViaEmail(message,'Palmashow Soundboard: '+this.sound.name,null,null,null,
+                        this.cacheService.getCachedSoundPath(this.sound));
+                }
+                if(data === 'facebook') {
+                    window.plugins.socialsharing.shareViaFacebook(message,this.cacheService.getCachedSoundPath(this.sound));
+                }
+            }
+        });
+        return alert;
+    }
+    onClickShare(event:Event):void {
+        event.preventDefault();
+        this.navController.present(this.createShareAlert());
     }
     removeFromCache(event:Event):void {
         event.preventDefault();

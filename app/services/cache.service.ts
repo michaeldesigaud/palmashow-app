@@ -61,6 +61,9 @@ export class CacheService {
     cacheImages(targets:JQuery):void {
         this.platform.ready().then(() => targets.each((index:number,target:any) => this.readImageCache(target)));
     }
+    getCachedSoundPath(sound:any):string {
+        return cordova.file.externalRootDirectory+this.soundCache.toPath(sound.file);
+    }
     private readImageCache(target:any):void {
         ImgCache.isCached($(target).attr('src'), (path, success) => {
             if (success) {

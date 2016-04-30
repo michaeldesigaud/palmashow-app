@@ -4,6 +4,7 @@
  */
 import {Pipe, PipeTransform} from 'angular2/core';
 import {DatePipe} from 'angular2/common';
+import {DateFormatter} from 'angular2/src/facade/intl';
 
 @Pipe({
     name: 'stringDate'
@@ -11,7 +12,7 @@ import {DatePipe} from 'angular2/common';
 export class StringDatePipe implements PipeTransform {
     transform(value: string, args: any[]) {
         if(value) {
-            return new DatePipe().transform(new Date(value),args);
+            return DateFormatter.format(new Date(value), 'pt', 'dd/MM/yyyy');
         }
         return;
     }

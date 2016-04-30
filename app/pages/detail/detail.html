@@ -9,7 +9,7 @@
             </ion-thumbnail>
             <h2>{{sound.name}}</h2>
             <p *ngIf="sound.user_id">{{getUsername(sound.user_id)}}</p>
-            <p>Ajouté le {{sound.creation_date | stringDate:'shortDate'}}</p>
+            <p>Ajouté le {{sound.creation_date | stringDate}}</p>
         </ion-item>
         <ion-item *ngIf="canRingtone()">
             <ion-label>Exporter en sonnerie</ion-label>
@@ -23,6 +23,10 @@
             <ion-label>Mettre en Favoris</ion-label>
             <button outline *ngIf="!bookmarked" item-right favorite (click)="onClickBookmark($event)"><ion-icon name="star"></ion-icon> Favoris</button>
             <button *ngIf="bookmarked" item-right danger (click)="onClickDeleteBookmark($event)"><ion-icon name="star"></ion-icon> Delete</button>
+        </ion-item>
+        <ion-item *ngIf="platform.is('cordova')">
+            <ion-label>Partager ce son</ion-label>
+            <button outline secondary item-right (click)="onClickShare($event)"><ion-icon name="md-share"></ion-icon> Partager</button>
         </ion-item>
         <ion-item *ngIf="sound.youtube_url">
             <ion-label>Lien youtube</ion-label>

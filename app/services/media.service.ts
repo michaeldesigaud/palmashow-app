@@ -38,8 +38,8 @@ export class MediaService {
             if(!this.cacheService.soundInCache(newSound.file)) {
                 this.media.src = newSound.file;
             } else {
-                console.log('Playing sound from cache','file:///'+cordova.file.externalRootDirectory+this.cacheService.soundCache.toPath(newSound.file));
-                this.media.src = cordova.file.externalRootDirectory+this.cacheService.soundCache.toPath(newSound.file);
+                console.log('Playing sound from cache',this.cacheService.getCachedSoundPath(newSound));
+                this.media.src = this.cacheService.getCachedSoundPath(newSound);
             }
         } else {
             if(!this.cacheService.soundInCache(newSound.file)) {

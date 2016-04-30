@@ -44,6 +44,7 @@ export class SettingsPage {
                 buttons: [{text: 'Ok', handler: () => {alert.dismiss()}}]
             });
             this.navController.present(alert);
+            this.nbSoundsInCache = 0;
         });
     }
     onClickDeleteImages(event:Event):void {
