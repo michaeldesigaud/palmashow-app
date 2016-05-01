@@ -6,6 +6,11 @@
 </ion-navbar>
 <ion-content class="has-header">
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
+    <ion-row *ngIf="group">
+        <ion-col width-10></ion-col>
+        <ion-col width-80><img src="{{group.imageName}}" /></ion-col>
+        <ion-col width-10></ion-col>
+    </ion-row>
     <ion-list no-border>
         <ion-item *ngFor="#sound of sounds | searchFilter:{name:searchQuery}" (click)="onPlay($event,sound)">
             <h2>{{sound.name}}</h2>

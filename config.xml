@@ -2,50 +2,64 @@
 <widget id="com.ionicframework.palmashowsoundboard304839" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Palmashow Soundboard</name>
   <description>Les meilleurs sons du Palmashow</description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+  <author email="michaeldesigaud@gmail.com" href="http://www.redfroggy.fr/">RedFroggy Team</author>
   <content src="index.html"/>
   <access origin="*"/>
-  <access origin="cdvfile://*" />
+  <access origin="cdvfile://*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
   <allow-intent href="sms:*"/>
   <allow-intent href="mailto:*"/>
   <allow-intent href="geo:*"/>
-  <allow-intent href="cdvfile://*" />
+  <allow-intent href="cdvfile://*"/>
   <platform name="android">
     <allow-intent href="market:*"/>
+    <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
+    <icon src="resources\android\icon\drawable-mdpi-icon.png" density="mdpi"/>
+    <icon src="resources\android\icon\drawable-hdpi-icon.png" density="hdpi"/>
+    <icon src="resources\android\icon\drawable-xhdpi-icon.png" density="xhdpi"/>
+    <icon src="resources\android\icon\drawable-xxhdpi-icon.png" density="xxhdpi"/>
+    <icon src="resources\android\icon\drawable-xxxhdpi-icon.png" density="xxxhdpi"/>
+    <splash src="resources\android\splash\drawable-port-ldpi-screen.png" density="port-ldpi"/>
+    <splash src="resources\android\splash\drawable-port-mdpi-screen.png" density="port-mdpi"/>
+    <splash src="resources\android\splash\drawable-port-hdpi-screen.png" density="port-hdpi"/>
+    <splash src="resources\android\splash\drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
+    <splash src="resources\android\splash\drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
+    <splash src="resources\android\splash\drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
   <platform name="ios">
     <allow-intent href="itms:*"/>
     <allow-intent href="itms-apps:*"/>
   </platform>
-  <preference name="orientation" value="portrait" />
+  <preference name="orientation" value="portrait"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="14"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name="AndroidPersistentFileLocation" value="Internal" />
-  <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+  <preference name="AndroidPersistentFileLocation" value="Internal"/>
+  <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
+  <preference name="SplashScreen" value="screen"/>
+  <preference name="SplashScreenDelay" value="3000"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
   <feature name="Device">
-    <param name="ios-package" value="CDVDevice" />
-    <param name="android-package" value="org.apache.cordova.device.Device" />
+    <param name="ios-package" value="CDVDevice"/>
+    <param name="android-package" value="org.apache.cordova.device.Device"/>
   </feature>
   <feature name="File">
-    <param name="ios-package" value="CDVFile" />
-    <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+    <param name="ios-package" value="CDVFile"/>
+    <param name="android-package" value="org.apache.cordova.file.FileUtils"/>
   </feature>
   <feature name="FileTransfer">
-    <param name="ios-package" value="CDVFileTransfer" />
-    <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+    <param name="ios-package" value="CDVFileTransfer"/>
+    <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer"/>
   </feature>
   <feature name="SocialSharing">
-    <param name="ios-package" value="SocialSharing" />
-    <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+    <param name="ios-package" value="SocialSharing"/>
+    <param name="android-package" value="nl.xservices.plugins.SocialSharing"/>
   </feature>
   <plugin name="cordova-plugin-device" spec="~1.1.1"/>
   <plugin name="cordova-plugin-console" spec="~1.0.2"/>
@@ -54,7 +68,8 @@
   <plugin name="cordova-plugin-statusbar" spec="~2.1.2"/>
   <plugin name="ionic-plugin-keyboard" spec="~2.0.1"/>
   <plugin name="cordova-plugin-file" spec="~4.1.1"/>
-  <plugin name="cordova-plugin-file-transfer" spec="~1.5.1" />
-  <plugin name="com.hiraqui.ringtone" spec="0.6.1" />
-  <plugin name="cordova-plugin-x-socialsharing" source="npm" />
+  <plugin name="cordova-plugin-file-transfer" spec="~1.5.1"/>
+  <plugin name="com.hiraqui.ringtone" spec="0.6.1"/>
+  <plugin name="cordova-plugin-x-socialsharing" source="npm"/>
+  <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>

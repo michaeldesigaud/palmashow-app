@@ -6,11 +6,16 @@
 </ion-navbar>
 <ion-content>
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
+    <ion-row>
+        <ion-col width-10></ion-col>
+        <ion-col width-80><img src="{{parentGroup.imageName}}" /></ion-col>
+        <ion-col width-10></ion-col>
+    </ion-row>
     <ion-card *ngFor="#group of groups | searchFilter:{title:searchQuery}" (click)="onClickListen($event,group)">
-        <img src="{{group.imageName}}" />
         <ion-card-content>
             <ion-card-title>{{group.title}}</ion-card-title>
             <p>{{group.description}}</p>
+            <p *ngIf="group.items"><small><i>{{group.items}}</i></small></p>
         </ion-card-content>
         <ion-row no-padding>
             <ion-col text-right>

@@ -10,6 +10,7 @@
         <ion-card-content>
             <ion-card-title>{{group.title}}</ion-card-title>
             <p>{{group.description}}</p>
+            <p *ngIf="group.items"><small><i>{{group.items}}</i></small></p>
         </ion-card-content>
     </ion-card>
     <ion-infinite-scroll (infinite)="doInfinite($event)">
