@@ -6,25 +6,13 @@
 </ion-navbar>
 <ion-content>
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
-    <ion-row>
-        <ion-col width-10></ion-col>
-        <ion-col width-80><img src="{{parentGroup.imageName}}" /></ion-col>
-        <ion-col width-10></ion-col>
-    </ion-row>
-    <ion-card *ngFor="#group of groups | searchFilter:{title:searchQuery}" (click)="onClickListen($event,group)">
-        <ion-card-content>
-            <ion-card-title>{{group.title}}</ion-card-title>
-            <p>{{group.description}}</p>
+    <ion-list no-border>
+        <ion-item *ngFor="#group of groups | searchFilter:{title:searchQuery}" (click)="onClickListen($event,group)">
+            <h2>{{group.title}}</h2>
+            <p [innerHtml]="group.description"></p>
             <p *ngIf="group.items"><small><i>{{group.items}}</i></small></p>
-        </ion-card-content>
-        <ion-row no-padding>
-            <ion-col text-right>
-                <button clear small secondary>
-                    <ion-icon name='musical-notes'></ion-icon> Ecouter
-                </button>
-            </ion-col>
-        </ion-row>
-    </ion-card>
+        </ion-item>
+    </ion-list>
     <ion-infinite-scroll (infinite)="doInfinite($event)">
         <ion-infinite-scroll-content
                 loadingSpinner="bubbles"

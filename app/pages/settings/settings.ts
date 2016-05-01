@@ -3,7 +3,7 @@
  * Created by Michael DESIGAUD on 27/04/2016.
  */
 
-import {Page,Toggle,Storage,LocalStorage,Alert,NavController} from 'ionic-angular/index';
+import {Page,Toggle,Storage,LocalStorage,Alert,NavController,Platform} from 'ionic-angular/index';
 import {CacheService} from '../../services/cache.service';
 import * as Utils from '../../utils/app.utils';
 
@@ -15,7 +15,8 @@ export class SettingsPage {
     private useCacheSound:boolean = true;
     private useCacheImage:boolean = true;
     private nbSoundsInCache:number = 0;
-    constructor(private navController:NavController,private cacheService:CacheService) {
+    private cacheText:string;
+    constructor(private platform:Platform, private navController:NavController,private cacheService:CacheService) {
         this.storage = new Storage(LocalStorage);
         this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value) => {
             if(value) {
@@ -27,6 +28,14 @@ export class SettingsPage {
                 this.useCacheImage = value;
             }
         });
+        this.getCacheSize();
+    }
+    getCacheSize():void {
+        if(navigator.webkitPersistentStorage) {
+            navigator.webkitPersistentStorage.queryUsageAndQuota ((usedBytes,grantedBytes) => {
+                this.cacheText = Math.floor(usedBytes / 1048576) + ' Mb / ' + Math.floor(grantedBytes / 1048576)+' Mb';
+            });
+        }
     }
     onPageLoaded():void {
         this.cacheService.soundCache.list().then((list) => this.nbSoundsInCache = list.length);

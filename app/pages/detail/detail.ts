@@ -3,7 +3,7 @@
  * Created by Michael DESIGAUD on 29/04/2016.
  */
 
-import {Page,NavParams,Storage,LocalStorage,Events,Alert,Platform,IonicApp} from 'ionic-angular/index';
+import {Page,NavParams,Storage,LocalStorage,Events,Alert,Platform,IonicApp,Modal} from 'ionic-angular/index';
 import {DataService} from '../../services/data.service';
 import {StringDatePipe} from '../../pipes/pipes';
 import {CacheService} from '../../services/cache.service';
@@ -11,6 +11,7 @@ import * as Utils from '../../utils/app.utils';
 import {NavController} from "ionic-angular/index";
 import {Inject,forwardRef} from 'angular2/core';
 import {MyApp} from '../../app';
+import {LyricsPage} from '../lyrics/lyrics';
 
 @Page({
     templateUrl:'build/pages/detail/detail.html',
@@ -20,8 +21,9 @@ export class Detail {
     private sound:any;
     private storage:Storage;
     private saveType:string;
-    private alertOptions:any = {title:'Exporter le son',subTitle:'Suavegarder le son en tant que sonnerie ou notification'};
+    private alertOptions:any = {title:'Exporter le son',subTitle:'Sauvegarder le son en tant que sonnerie ou notification'};
     private bookmarked:boolean = false;
+    private playing:boolean = true;
     constructor(@Inject(forwardRef(() => MyApp)) private _parent:MyApp,private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams) {
         this.storage = new Storage(LocalStorage);
         this.sound = navParams.get('sound');
@@ -61,16 +63,18 @@ export class Detail {
             sound.playing = true;
         });
     }
-    onPageDidEnter():void {
-      this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value:string) => {
-            if(value === 'true') {
-                this.cacheService.cacheSound(this.sound,()=> {
-                    this._parent.mediaPlayer.play(this.sound);
-                });
-            } else {
-                this._parent.mediaPlayer.play(this.sound)
-            }
-        });
+    onPageLoaded():void {
+        if(this.playing) {
+            this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value:string) => {
+                if (value === 'true') {
+                    this.cacheService.cacheSound(this.sound, ()=> {
+                        this._parent.mediaPlayer.play(this.sound);
+                    });
+                } else {
+                    this._parent.mediaPlayer.play(this.sound)
+                }
+            });
+        }
     }
     onPageDidLeave():void {
         delete this.events._channels[Utils.EVENT_CACHE_SOUND_DOWNLOADED];
@@ -112,6 +116,12 @@ export class Detail {
     onRedirectYoutube(event:Event):void {
         event.preventDefault();
         window.open(this.sound.youtube_url,'_blank');
+    }
+    onClickLyrics(event:Event):void {
+        event.preventDefault();
+        let lycrisModal:Modal = Modal.create(LyricsPage,{sound:this.sound});
+        lycrisModal.onDismiss(data => this.playing = false);
+        this.navController.present(lycrisModal);
     }
     createShareAlert():Alert {
         let alert = Alert.create();

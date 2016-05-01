@@ -24,6 +24,10 @@
             <button outline *ngIf="!bookmarked" item-right favorite (click)="onClickBookmark($event)"><ion-icon name="star"></ion-icon> Favoris</button>
             <button *ngIf="bookmarked" item-right danger (click)="onClickDeleteBookmark($event)"><ion-icon name="star"></ion-icon> Delete</button>
         </ion-item>
+        <ion-item *ngIf="sound.lyrics">
+            <ion-label>Paroles</ion-label>
+            <button outline item-right (click)="onClickLyrics($event)"><ion-icon name="musical_notes"></ion-icon> Paroles</button>
+        </ion-item>
         <ion-item *ngIf="platform.is('cordova')">
             <ion-label>Partager ce son</ion-label>
             <button outline secondary item-right (click)="onClickShare($event)"><ion-icon name="md-share"></ion-icon> Partager</button>

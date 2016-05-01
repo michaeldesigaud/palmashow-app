@@ -13,6 +13,10 @@ interface Cordova {
     file:any;
 }
 
+interface Navigator {
+    webkitPersistentStorage:any;
+}
+
 interface ImgCache {
     options:any;
     init(success:Function,error:Function):void;

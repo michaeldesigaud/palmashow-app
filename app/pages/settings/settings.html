@@ -7,6 +7,10 @@
 <ion-content>
     <ion-list-header>Cache</ion-list-header>
     <ion-list>
+        <ion-item *ngIf="platform.is('core')">
+            <ion-label>Taille données</ion-label>
+            <span item-right>{{cacheText}}</span>
+        </ion-item>
         <ion-item>
             <ion-label>Sons en cache à la lecture</ion-label>
             <ion-toggle (change)="onChangeToggleSound($event)" [(ngModel)]="useCacheSound"></ion-toggle>

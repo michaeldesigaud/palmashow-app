@@ -55,4 +55,8 @@ export class SoundsPage {
         event.preventDefault();
         this.navController.push(Detail, {sound: sound}, {animate: false});
     }
+    getThumbtail(id:number):string {
+        let user:any = this.dataService.getUserById(id);
+        return user.thumbtail;
+    }
 }

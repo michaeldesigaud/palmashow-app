@@ -68,6 +68,7 @@ export class MediaService {
             console.log('This song is playing already');
             this.currentSound.loading = false;
             this.currentSound.playing = true;
+            this.events.publish(Utils.EVENT_MEDIA_PLAYING,this.currentSound);
         }
     }
 }

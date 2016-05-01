@@ -37,6 +37,9 @@ export class GroupsPage {
   doInfinite(infiniteScroll:InfiniteScroll) {
     this.getGroups(() => infiniteScroll.complete());
   }
+  onClickBtnListen(event:Event):void {
+    event.stopImmediatePropagation();
+  }
   onClickListen(event:Event,group:any) {
     event.preventDefault();
     let navTransition = this.navController.push(SoundsPage,{group:group,title:group.title,userInfo:true});
