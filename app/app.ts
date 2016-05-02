@@ -48,7 +48,11 @@ export class MyApp {
     this.dataService.getGroups(10).subscribe((groups:Array<any>) => {
       let parentGroups:Array<any> = groups.filter(group => !group.parent_id);
       parentGroups.forEach((group) => {
-        this.pages.push({label:group.title,component:GroupsPage,icon:group.iconName,params:{group:group}});
+        let page:Type = GroupsPage;
+        if(group.sub_groups === '0') {
+          page = SoundsPage;
+        }
+        this.pages.push({label:group.title,component:page,icon:group.iconName,params:{group:group}});
       });
     });
   }
@@ -88,7 +92,15 @@ export class MyApp {
     this.app.getComponent('leftMenu').enable(true);
     let nav:NavController = this.app.getComponent('nav');
     if(page.params) {
-      nav.setRoot(page.component,{parentGroup:page.params.group});
+      let params:any = {};
+      if(page.params.group.sub_groups === '0') {
+        params.group = page.params.group;
+        params.title = page.params.group.title;
+        params.userInfo = true;
+      } else {
+        params.parentGroup = page.params.group;
+      }
+      nav.setRoot(page.component,params);
     } else {
       nav.setRoot(page.component);
     }

@@ -20,9 +20,11 @@ import * as Utils from '../../utils/app.utils';
 export class GroupsPage {
   groups:Array<any>;
   parentGroup:any;
+  sliderOptions:any;
   constructor(navParams:NavParams,private navController:NavController,private dataService:DataService,private cacheService:CacheService,private elementRef:ElementRef) {
     this.parentGroup = navParams.get('parentGroup');
     this.getGroups(() => {});
+    this.sliderOptions = {autoplay:2000,loop:true};
   }
   getLimit():number {
     return this.groups && this.groups.length >= Utils.NB_GROUPS_PER_PAGE ? this.groups.length + Utils.NB_GROUPS_PER_PAGE : Utils.NB_GROUPS_PER_PAGE;
@@ -47,5 +49,9 @@ export class GroupsPage {
       let elementRef:ElementRef = this.navController.getActive().contentRef();
       this.cacheService.cacheImages($(elementRef.nativeElement).find('img'));
     });
+  }
+  onSelectSlide(event:Event):void {
+    event.stopImmediatePropagation();
+    console.log();
   }
 }
