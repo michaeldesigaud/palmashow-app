@@ -6,7 +6,7 @@
 </ion-navbar>
 <ion-content class="has-header">
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
-    <ion-list no-border>
+    <ion-list no-border *ngIf="sounds && sounds.length > 0">
         <ion-item *ngFor="#sound of sounds | searchFilter:{name:searchQuery}" (click)="onPlay($event,sound)">
             <h2>{{sound.name}}</h2>
             <p *ngIf="sound.user_id">{{getUsername(sound.user_id)}}</p>
