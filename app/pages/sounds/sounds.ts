@@ -2,7 +2,7 @@
  * Sounds page component
  * Created by Michael DESIGAUD on 19/04/2016.
  */
-import {Page,NavParams,NavController,InfiniteScroll} from 'ionic-angular/index';
+import {Page,NavParams,NavController,Refresher} from 'ionic-angular/index';
 import {DataService} from '../../services/data.service';
 import {StringDatePipe,SearchFilterPipe} from '../../pipes/pipes';
 import * as Utils from '../../utils/app.utils';
@@ -28,17 +28,14 @@ export class SoundsPage {
     onClickCache(event:Event):void {
         event.stopImmediatePropagation();
     }
-    getLimit():number {
-        return this.sounds && this.sounds.length >= Utils.NB_SOUNDS_PER_PAGE ? this.sounds.length + Utils.NB_SOUNDS_PER_PAGE : Utils.NB_SOUNDS_PER_PAGE;
-    }
     getSounds(callback:Function):void {
         if(this.group) {
-            this.dataService.getSounds(this.group.id, this.getLimit()).subscribe((sounds:Array<any>) => {
+            this.dataService.getSounds(this.group.id).subscribe((sounds:Array<any>) => {
                 this.sounds = sounds;
                 callback();
             });
         } else if(this.ids){
-            this.dataService.getSoundsByIds(this.ids,this.getLimit()).subscribe((sounds:Array<any>) => {
+            this.dataService.getSoundsByIds(this.ids).subscribe((sounds:Array<any>) => {
                 this.sounds = sounds;
                 callback();
             });
@@ -48,8 +45,8 @@ export class SoundsPage {
         let user:any = this.dataService.getUserById(id);
         return user.name;
     }
-    doInfinite(infiniteScroll:InfiniteScroll) {
-        this.getSounds(() => infiniteScroll.complete());
+    doRefresh(refresher:Refresher) {
+        this.getSounds(() => refresher.complete());
     }
     onPlay(event:Event,sound:any) {
         event.preventDefault();

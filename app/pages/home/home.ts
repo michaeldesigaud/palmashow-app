@@ -1,4 +1,4 @@
-import {Page,NavController,Platform,InfiniteScroll,Events} from 'ionic-angular/index';
+import {Page,NavController,Platform,Refresher,Events} from 'ionic-angular/index';
 import {GroupsPage} from '../groups/groups';
 import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';
@@ -19,14 +19,11 @@ export class HomePage {
     constructor(private navController:NavController,private dataService:DataService,private cacheService:CacheService,private events:Events,private elementRef:ElementRef){
         this.getGroups(() => {});
     }
-    doInfinite(infiniteScroll:InfiniteScroll) {
-        this.getGroups(() => infiniteScroll.complete());
-    }
-    getLimit():number {
-        return this.groups && this.groups.length === Utils.NB_GROUPS_PER_PAGE ? this.groups.length + Utils.NB_GROUPS_PER_PAGE : Utils.NB_GROUPS_PER_PAGE;
+    doRefresh(refresher:Refresher) {
+        this.getGroups(() => refresher.complete());
     }
     getGroups(callback:Function):void {
-        this.dataService.getGroups(this.getLimit()).subscribe((groups:Array<any>) => {
+        this.dataService.getGroups().subscribe((groups:Array<any>) => {
             this.groups = groups;
             callback();
         });

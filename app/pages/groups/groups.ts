@@ -3,7 +3,7 @@
  * Created by Michael DESIGAUD on 19/04/2016.
  */
 
-import {Page,NavController,NavParams,InfiniteScroll} from 'ionic-angular/index';
+import {Page,NavController,NavParams,Refresher} from 'ionic-angular/index';
 import {Http,Response} from 'angular2/http';
 
 import {ElementRef} from 'angular2/core';
@@ -26,18 +26,15 @@ export class GroupsPage {
     this.getGroups(() => {});
     this.sliderOptions = {autoplay:2000,loop:true};
   }
-  getLimit():number {
-    return this.groups && this.groups.length >= Utils.NB_GROUPS_PER_PAGE ? this.groups.length + Utils.NB_GROUPS_PER_PAGE : Utils.NB_GROUPS_PER_PAGE;
-  }
   getGroups(callback:Function):void {
-    this.dataService.getChildGroups(this.parentGroup.id,this.getLimit()).subscribe((groups:Array<any>) => {
+    this.dataService.getChildGroups(this.parentGroup.id).subscribe((groups:Array<any>) => {
       this.groups = groups;
       this.cacheService.cacheImages($(this.elementRef.nativeElement).find('img'));
       callback();
     });
   }
-  doInfinite(infiniteScroll:InfiniteScroll) {
-    this.getGroups(() => infiniteScroll.complete());
+  doRefresh(refresher:Refresher) {
+    this.getGroups(() => refresher.complete());
   }
   onClickBtnListen(event:Event):void {
     event.stopImmediatePropagation();

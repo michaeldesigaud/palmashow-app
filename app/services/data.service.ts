@@ -60,17 +60,17 @@ export class DataService {
     getConfig():Observable<any> {
         return this.http.get(Utils.DEFAULT_SERVER_HOST+Utils.CONFIG_PATH,{headers:this.getHeaders()}).map(res => res.json());
     }
-    getChildGroups(parentId:string,limit:number):Observable<any> {
-        return this.http.get(this.getUrl(Utils.CONFIG_CHILD_GROUPS_PATH,{parentId:parentId,limit:limit}),{headers:this.getHeaders()}).map(res => res.json());
+    getChildGroups(parentId:string):Observable<any> {
+        return this.http.get(this.getUrl(Utils.CONFIG_CHILD_GROUPS_PATH,{parentId:parentId}),{headers:this.getHeaders()}).map(res => res.json());
     }
     getGroups(limit:number):Observable<any> {
-        return this.http.get(this.getUrl(Utils.CONFIG_PARENT_GROUPS_PATH,{limit:limit}),{headers:this.getHeaders()}).map(res => res.json());
+        return this.http.get(this.getUrl(Utils.CONFIG_PARENT_GROUPS_PATH),{headers:this.getHeaders()}).map(res => res.json());
     }
-    getSounds(groupId:string,limit:number):Observable<any> {
-        return this.http.get(this.getUrl(Utils.CONFIG_SOUNDS_PATH,{groupId:groupId,limit:limit}),{headers:this.getHeaders()}).map(res => res.json());
+    getSounds(groupId:string):Observable<any> {
+        return this.http.get(this.getUrl(Utils.CONFIG_SOUNDS_PATH,{groupId:groupId}),{headers:this.getHeaders()}).map(res => res.json());
     }
-    getSoundsByIds(ids:Array<string>,limit:number):Observable<any> {
-        return this.http.post(this.getUrl(Utils.CONFIG_SOUNDS_BY_IDS_PATH,{limit:limit}),JSON.stringify(ids),{headers:this.getHeaders()}).map(res => res.json());
+    getSoundsByIds(ids:Array<string>):Observable<any> {
+        return this.http.post(this.getUrl(Utils.CONFIG_SOUNDS_BY_IDS_PATH),JSON.stringify(ids),{headers:this.getHeaders()}).map(res => res.json());
     }
     getUsers():Observable<any> {
         if (this.users) {

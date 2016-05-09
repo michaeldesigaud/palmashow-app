@@ -5,6 +5,14 @@
     <ion-title>{{title}}</ion-title>
 </ion-navbar>
 <ion-content class="has-header">
+    <ion-refresher (refresh)="doRefresh($event)">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Glisser vers le bas pour rafrâichir"
+                refreshingSpinner="circles"
+                refreshingText="Chargement...">
+        </ion-refresher-content>
+    </ion-refresher>
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
     <ion-list no-border *ngIf="sounds && sounds.length > 0">
         <ion-item *ngFor="#sound of sounds | searchFilter:{name:searchQuery}" (click)="onPlay($event,sound)">
@@ -14,10 +22,4 @@
             <button outline secondary item-right (click)="onClickCache($event)" *ngIf="cacheService.soundInCache(sound.file)"><ion-icon name="archive"></ion-icon> Cache</button>
         </ion-item>
     </ion-list>
-    <ion-infinite-scroll (infinite)="doInfinite($event)">
-        <ion-infinite-scroll-content
-                loadingSpinner="bubbles"
-                loadingText="Chargement des sons...">
-        </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
 </ion-content>

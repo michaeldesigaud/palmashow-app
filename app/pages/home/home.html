@@ -5,6 +5,14 @@
     <ion-title>Le palmashow</ion-title>
 </ion-navbar>
 <ion-content>
+    <ion-refresher (refresh)="doRefresh($event)">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Glisser vers le bas pour rafrâichir"
+                refreshingSpinner="circles"
+                refreshingText="Chargement...">
+        </ion-refresher-content>
+    </ion-refresher>
     <ion-card *ngFor="#group of groups" (click)="goToGroupsPage(group)">
         <img src="{{group.imageName}}" />
         <ion-card-content>
@@ -13,10 +21,4 @@
             <p *ngIf="group.items"><small><i>{{group.items}}</i></small></p>
         </ion-card-content>
     </ion-card>
-    <ion-infinite-scroll (infinite)="doInfinite($event)">
-        <ion-infinite-scroll-content
-                loadingSpinner="bubbles"
-                loadingText="Chargement des données...">
-        </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
 </ion-content>
