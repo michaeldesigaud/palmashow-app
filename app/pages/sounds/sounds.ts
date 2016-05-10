@@ -28,14 +28,14 @@ export class SoundsPage {
     onClickCache(event:Event):void {
         event.stopImmediatePropagation();
     }
-    getSounds(callback:Function):void {
+    getSounds(callback:Function,clearCache:boolean = false):void {
         if(this.group) {
-            this.dataService.getSounds(this.group.id).subscribe((sounds:Array<any>) => {
+            this.dataService.getSounds(this.group.id,clearCache).subscribe((sounds:Array<any>) => {
                 this.sounds = sounds;
                 callback();
             });
         } else if(this.ids){
-            this.dataService.getSoundsByIds(this.ids).subscribe((sounds:Array<any>) => {
+            this.dataService.getSoundsByIds(this.ids,clearCache).subscribe((sounds:Array<any>) => {
                 this.sounds = sounds;
                 callback();
             });
@@ -46,7 +46,7 @@ export class SoundsPage {
         return user.name;
     }
     doRefresh(refresher:Refresher) {
-        this.getSounds(() => refresher.complete());
+        this.getSounds(() => refresher.complete(),true);
     }
     onPlay(event:Event,sound:any) {
         event.preventDefault();

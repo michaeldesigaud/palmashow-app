@@ -6,6 +6,7 @@
 import {Page,Toggle,Storage,LocalStorage,Alert,NavController,Platform} from 'ionic-angular/index';
 import {CacheService} from '../../services/cache.service';
 import * as Utils from '../../utils/app.utils';
+import {NgZone} from 'angular2/core';
 
 @Page({
     templateUrl:'build/pages/settings/settings.html',
@@ -15,7 +16,7 @@ export class SettingsPage {
     private useCacheSound:boolean = true;
     private useCacheImage:boolean = true;
     private nbSoundsInCache:number = 0;
-    constructor(private platform:Platform, private navController:NavController,private cacheService:CacheService) {
+    constructor(private platform:Platform, private navController:NavController,private cacheService:CacheService,private zone:NgZone) {
         this.storage = new Storage(LocalStorage);
         this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value) => {
             if(value) {
@@ -29,7 +30,7 @@ export class SettingsPage {
         });
     }
     onPageLoaded():void {
-        this.cacheService.soundCache.list().then((list) => this.nbSoundsInCache = list.length);
+        this.cacheService.soundCache.list().then((list) => this.zone.run(() => this.nbSoundsInCache = list.length));
     }
     onChangeToggleSound(toggle:Toggle):void {
         this.storage.set(Utils.LOCAL_STORAGE_USE_CACHE_SOUND,toggle.checked);
@@ -58,6 +59,21 @@ export class SettingsPage {
                 buttons: [{text: 'Ok', handler: () => {alert.dismiss()}}]
             });
             this.navController.present(alert);
+        });
+    }
+    onClickDeleteData(event:Event):void {
+        event.preventDefault();
+        Object.keys(localStorage).forEach((key:string) => {
+            if(key.indexOf('cmd=') !== -1) {
+                this.storage.remove(key).then(() => {
+                    let alert:Alert = Alert.create({
+                        title: 'Suppression réussie !',
+                        subTitle: 'Toutes les données du cache ont été supprimées.',
+                        buttons: [{text: 'Ok', handler: () => {alert.dismiss()}}]
+                    });
+                    this.navController.present(alert);
+                });
+            }
         });
     }
 }

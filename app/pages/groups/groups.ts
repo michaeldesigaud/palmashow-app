@@ -26,15 +26,15 @@ export class GroupsPage {
     this.getGroups(() => {});
     this.sliderOptions = {autoplay:2000,loop:true};
   }
-  getGroups(callback:Function):void {
-    this.dataService.getChildGroups(this.parentGroup.id).subscribe((groups:Array<any>) => {
+  getGroups(callback:Function,clearCache:boolean = false):void {
+    this.dataService.getChildGroups(this.parentGroup.id,clearCache).subscribe((groups:Array<any>) => {
       this.groups = groups;
       this.cacheService.cacheImages($(this.elementRef.nativeElement).find('img'));
       callback();
     });
   }
   doRefresh(refresher:Refresher) {
-    this.getGroups(() => refresher.complete());
+    this.getGroups(() => refresher.complete(),true);
   }
   onClickBtnListen(event:Event):void {
     event.stopImmediatePropagation();

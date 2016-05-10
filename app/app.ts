@@ -7,18 +7,31 @@ import {CacheService} from './services/cache.service';
 import {HomePage} from './pages/home/home';
 import {SettingsPage} from './pages/settings/settings';
 import {NavController} from 'ionic-angular/index';
-import {Type,ViewChild} from 'angular2/core';
+import {Type,ViewChild,provide} from 'angular2/core';
 import  * as Utils from './utils/app.utils';
 
 import 'es6-shim';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/toPromise';
+
 import {SoundsPage} from "./pages/sounds/sounds";
 import {LOCAL_STORAGE_BOOKMARK} from "./utils/app.utils";
 import {MediaPlayer} from './components/player/media-player';
+import {Http,XHRBackend,RequestOptions} from 'angular2/http';
+import {CachedHttp} from './utils/cached-http';
 
 @App({
   templateUrl: 'build/app.html',
-  providers:[MediaService,DataService,CacheService],
+  providers:[MediaService,DataService,CacheService,
+    provide(Http,{
+      useFactory:(xhrBackend: XHRBackend, requestOptions: RequestOptions, cacheService:CacheService) => {
+        return new CachedHttp(xhrBackend, requestOptions, cacheService);
+      },
+      deps: [XHRBackend, RequestOptions,CacheService],
+      multi:false
+    })],
   directives:[MediaPlayer],
   config: {}
 })
@@ -45,7 +58,7 @@ export class MyApp {
     });
   }
   loadMenuPages():void {
-    this.dataService.getGroups(10).subscribe((groups:Array<any>) => {
+    this.dataService.getGroups().subscribe((groups:Array<any>) => {
       let parentGroups:Array<any> = groups.filter(group => !group.parent_id);
       parentGroups.forEach((group) => {
         let page:Type = GroupsPage;

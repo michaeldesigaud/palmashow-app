@@ -18,6 +18,9 @@ export class CacheService {
             this.initSoundCache();
         });
     }
+    dataInCache(key:string):Promise<any> {
+        return this.storage.getJson(key).then(value => {return {key:key,inCache:!!value}});
+    }
     initSoundCache():void {
         this.soundCache = new CordovaFileCache({
             fs: new CordovaPromiseFS({

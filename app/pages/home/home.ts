@@ -20,10 +20,10 @@ export class HomePage {
         this.getGroups(() => {});
     }
     doRefresh(refresher:Refresher) {
-        this.getGroups(() => refresher.complete());
+        this.getGroups(() => refresher.complete(),true);
     }
-    getGroups(callback:Function):void {
-        this.dataService.getGroups().subscribe((groups:Array<any>) => {
+    getGroups(callback:Function,clearCache:boolean = false):void {
+        this.dataService.getGroups(clearCache).subscribe((groups:Array<any>) => {
             this.groups = groups;
             callback();
         });

@@ -9,18 +9,20 @@ import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
 import {Subscription} from 'rxjs/Subscription';
 import * as Utils from '../utils/app.utils';
+import {CacheService} from './cache.service';
 
 @Injectable()
 export class DataService {
     users:Array<any>;
     private serverRoot:string;
     private configs:Array<any>;
-    constructor(private http:Http) {
+    constructor(private http:Http,private cacheService:CacheService) {
         console.log('DataService constructor');
     }
     initConfig(callback:Function):void {
         this.getConfig().subscribe((configs:Array<any>) =>{
             this.configs = configs;
+            console.log(configs);
             this.initRootConfig();
             this.getUsers().subscribe(users => this.users = users);
             callback();
@@ -60,25 +62,51 @@ export class DataService {
     getConfig():Observable<any> {
         return this.http.get(Utils.DEFAULT_SERVER_HOST+Utils.CONFIG_PATH,{headers:this.getHeaders()}).map(res => res.json());
     }
-    getChildGroups(parentId:string):Observable<any> {
-        return this.http.get(this.getUrl(Utils.CONFIG_CHILD_GROUPS_PATH,{parentId:parentId}),{headers:this.getHeaders()}).map(res => res.json());
+    getChildGroups(parentId:string,clearCache:boolean = false):Observable<any> {
+        let url:string = this.getUrl(Utils.CONFIG_CHILD_GROUPS_PATH,{parentId:parentId});
+        if(clearCache) {
+            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
+            this.cacheService.storage.remove(cacheKey);
+        }
+        return this.http.get(url,{headers:this.getHeaders()});
     }
-    getGroups(limit:number):Observable<any> {
-        return this.http.get(this.getUrl(Utils.CONFIG_PARENT_GROUPS_PATH),{headers:this.getHeaders()}).map(res => res.json());
+    getGroups(clearCache:boolean = false):Observable<any> {
+        let url:string = this.getUrl(Utils.CONFIG_PARENT_GROUPS_PATH);
+        if(clearCache) {
+            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
+            this.cacheService.storage.remove(cacheKey);
+        }
+        return this.http.get(url,{headers:this.getHeaders()});
     }
-    getSounds(groupId:string):Observable<any> {
-        return this.http.get(this.getUrl(Utils.CONFIG_SOUNDS_PATH,{groupId:groupId}),{headers:this.getHeaders()}).map(res => res.json());
+    getSounds(groupId?:string,clearCache:boolean = false):Observable<any> {
+        let url:string = this.getUrl(Utils.CONFIG_SOUNDS_PATH,{groupId:groupId});
+        if(clearCache) {
+            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
+            this.cacheService.storage.remove(cacheKey);
+        }
+        return this.http.get(url,{headers:this.getHeaders()});
     }
-    getSoundsByIds(ids:Array<string>):Observable<any> {
-        return this.http.post(this.getUrl(Utils.CONFIG_SOUNDS_BY_IDS_PATH),JSON.stringify(ids),{headers:this.getHeaders()}).map(res => res.json());
+    getSoundsByIds(ids:Array<string>,clearCache:boolean = false):Observable<any> {
+        let url:string = this.getUrl(Utils.CONFIG_SOUNDS_BY_IDS_PATH);
+        if(clearCache) {
+            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
+            this.cacheService.storage.remove(cacheKey);
+        }
+        return this.http.post(url,JSON.stringify(ids),{headers:this.getHeaders()});
     }
-    getUsers():Observable<any> {
+    getUsers(clearCache:boolean = false):Observable<any> {
+        let url:string = this.getUrl(Utils.CONFIG_USERS_PATH);
+        if(clearCache) {
+            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
+            this.cacheService.storage.remove(cacheKey);
+            this.users = null;
+        }
         if (this.users) {
             return Observable.create((observer:Observer<any>) => {
                 return observer.next(this.users);
             });
         }
-        return this.http.get(this.getUrl(Utils.CONFIG_USERS_PATH)).map(res => res.json());
+        return this.http.get(url);
     }
     getUserById(id:number):any {
         return this.users.find((user:any) => user.id === id.toString());

@@ -16,6 +16,11 @@
             <ion-toggle (change)="onChangeToggleImage($event)" [(ngModel)]="useCacheImage"></ion-toggle>
         </ion-item>
         <ion-item>
+            <h2>Supprimer les données texte</h2>
+            <p>Supprimer toutes les données texte du cache</p>
+            <button danger (click)="onClickDeleteData($event)"><ion-icon name="document"></ion-icon> Supprimer</button>
+        </ion-item>
+        <ion-item>
             <h2>Supprimer les sons</h2>
             <p>Supprimer tous les sons du cache</p>
             <ion-badge item-right>{{nbSoundsInCache}}</ion-badge>
