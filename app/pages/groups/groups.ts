@@ -33,8 +33,12 @@ export class GroupsPage {
       callback();
     });
   }
-  doRefresh(refresher:Refresher) {
-    this.getGroups(() => refresher.complete(),true);
+  doRefresh(refresher?:Refresher) {
+    this.getGroups(() => {
+      if(refresher) {
+        refresher.complete();
+      }
+    },true);
   }
   onClickBtnListen(event:Event):void {
     event.stopImmediatePropagation();

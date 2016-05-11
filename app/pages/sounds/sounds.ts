@@ -45,8 +45,12 @@ export class SoundsPage {
         let user:any = this.dataService.getUserById(id);
         return user.name;
     }
-    doRefresh(refresher:Refresher) {
-        this.getSounds(() => refresher.complete(),true);
+    doRefresh(refresher?:Refresher) {
+        this.getSounds(() => {
+            if(refresher) {
+                refresher.complete();
+            }
+        },true);
     }
     onPlay(event:Event,sound:any) {
         event.preventDefault();
