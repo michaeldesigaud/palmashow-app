@@ -22,7 +22,6 @@ export class DataService {
     initConfig(callback:Function):void {
         this.getConfig().subscribe((configs:Array<any>) =>{
             this.configs = configs;
-            console.log(configs);
             this.initRootConfig();
             this.getUsers().subscribe(users => this.users = users);
             callback();

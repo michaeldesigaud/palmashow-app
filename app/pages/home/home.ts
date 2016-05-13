@@ -4,7 +4,7 @@ import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';
 import {ElementRef,Type} from 'angular2/core';
 import * as Utils from '../../utils/app.utils';
-import {SoundsPage} from "../sounds/sounds";
+import {SoundsPage} from '../sounds/sounds';
 
 /**
  * home page component
@@ -20,7 +20,11 @@ export class HomePage {
         this.getGroups(() => {});
     }
     doRefresh(refresher:Refresher) {
-        this.getGroups(() => refresher.complete(),true);
+        this.getGroups(() => {
+            if(refresher) {
+                refresher.complete();
+            }
+        },true);
     }
     getGroups(callback:Function,clearCache:boolean = false):void {
         this.dataService.getGroups(clearCache).subscribe((groups:Array<any>) => {

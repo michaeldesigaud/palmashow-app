@@ -16,8 +16,8 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/toPromise';
 
-import {SoundsPage} from "./pages/sounds/sounds";
-import {LOCAL_STORAGE_BOOKMARK} from "./utils/app.utils";
+import {SoundsPage} from './pages/sounds/sounds';
+import {LOCAL_STORAGE_BOOKMARK} from './utils/app.utils';
 import {MediaPlayer} from './components/player/media-player';
 import {Http,XHRBackend,RequestOptions} from 'angular2/http';
 import {CachedHttp} from './utils/cached-http';

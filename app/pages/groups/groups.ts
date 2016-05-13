@@ -7,7 +7,7 @@ import {Page,NavController,NavParams,Refresher} from 'ionic-angular/index';
 import {Http,Response} from 'angular2/http';
 
 import {ElementRef} from 'angular2/core';
-import {SoundsPage} from "../sounds/sounds";
+import {SoundsPage} from '../sounds/sounds';
 import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';
 import {SearchFilterPipe} from '../../pipes/pipes';

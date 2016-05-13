@@ -8,7 +8,7 @@ import {DataService} from '../../services/data.service';
 import {StringDatePipe} from '../../pipes/pipes';
 import {CacheService} from '../../services/cache.service';
 import * as Utils from '../../utils/app.utils';
-import {NavController} from "ionic-angular/index";
+import {NavController} from 'ionic-angular/index';
 import {Inject,forwardRef} from 'angular2/core';
 import {MyApp} from '../../app';
 import {LyricsPage} from '../lyrics/lyrics';

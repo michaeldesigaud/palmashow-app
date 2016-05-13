@@ -45,7 +45,7 @@ export class CacheService {
             this.soundCache.ready.then(() => {
                 if (!this.soundInCache(sound.file)) {
                     this.soundCache.add(sound.file);
-                    this.soundCache.download().then(callback);
+                    this.soundCache.download((e) => console.log('progress',e)).then(callback);
                 } else {
                     callback();
                 }

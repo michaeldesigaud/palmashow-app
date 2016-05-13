@@ -4,7 +4,7 @@
  */
 
 import {Injectable} from 'angular2/core';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 import {Events,Platform} from 'ionic-angular/index';
 import * as Utils from '../utils/app.utils';
 import {CacheService} from './cache.service';

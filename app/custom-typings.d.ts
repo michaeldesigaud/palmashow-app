@@ -5,8 +5,8 @@
 
 interface Window {
     ringtone:any;
-    resolveLocalFileSystemURL(uri:string,success:Function,error?:Function):void
     plugins:any;
+    resolveLocalFileSystemURL(uri:string,success:Function,error?:Function):void;
 }
 
 interface Cordova {
