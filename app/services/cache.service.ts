@@ -21,6 +21,15 @@ export class CacheService {
     dataInCache(key:string):Promise<any> {
         return this.storage.getJson(key).then(value => {return {key:key,inCache:!!value}});
     }
+    clearCacheData():Promise<any> {
+        let promises:Array<Promise<any>> = [];
+        Object.keys(localStorage).forEach((key:string) => {
+            if(key.indexOf('cmd=') !== -1) {
+                promises.push(this.storage.remove(key));
+            }
+        });
+        return Promise.all(promises);
+    }
     initSoundCache():void {
         this.soundCache = new CordovaFileCache({
             fs: new CordovaPromiseFS({

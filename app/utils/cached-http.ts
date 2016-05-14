@@ -7,18 +7,12 @@ import {Http,RequestOptionsArgs,Response,ConnectionBackend,RequestOptions} from 
 import {Observable} from 'rxjs/Observable';
 import {CacheService} from '../services/cache.service';
 import * as Utils from './app.utils';
+import {DataService} from '../services/data.service';
 
 export class CachedHttp extends Http {
-    constructor(_backend: ConnectionBackend, _defaultOptions: RequestOptions, private _cacheService:CacheService) {
+    constructor(_backend: ConnectionBackend, _defaultOptions: RequestOptions,private _cacheService:CacheService) {
         super(_backend,_defaultOptions);
         console.log('CachedHttp constructor');
-    }
-    private checkCache(url:string):Promise<any> {
-        if(url && url.indexOf(Utils.CONFIG_PATH) === -1) {
-            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
-            return this._cacheService.dataInCache(cacheKey);
-        }
-        return Promise.resolve(false);
     }
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
         return Observable.fromPromise(this.checkCache(url).then((result:any) => {
@@ -51,5 +45,12 @@ export class CachedHttp extends Http {
                 return this._cacheService.storage.getJson(result.key);
             }
         }));
+    }
+    private checkCache(url:string):Promise<any> {
+        if(url && url.indexOf(Utils.CONFIG_PATH) === -1) {
+            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
+            return this._cacheService.dataInCache(cacheKey);
+        }
+        return Promise.resolve(false);
     }
 }

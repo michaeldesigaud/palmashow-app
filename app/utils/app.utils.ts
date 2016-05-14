@@ -21,6 +21,8 @@ export const CONFIG_PARENT_GROUPS_PATH:string = 'PARENT_GROUPS_PATH';
 export const CONFIG_SOUNDS_PATH:string = 'SOUNDS_PATH';
 export const CONFIG_SOUNDS_BY_IDS_PATH:string = 'SOUNDS_BY_IDS_PATH';
 export const CONFIG_USERS_PATH:string = 'CONFIG_USERS_PATH';
+export const CONFIG_CLEAR_CACHE:string = 'CLEAR_CACHE';
+export const CONFIG_DVD_PATH:string = 'DVD_PATH';
 export const CONFIG_PATH:string = '?cmd=config';
 
 export const GOOGLE_ANALYTICS_UAID:string = 'UA-60075836-3';

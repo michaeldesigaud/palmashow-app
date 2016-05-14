@@ -22,6 +22,7 @@ import {LOCAL_STORAGE_BOOKMARK} from './utils/app.utils';
 import {MediaPlayer} from './components/player/media-player';
 import {Http,XHRBackend,RequestOptions} from 'angular2/http';
 import {CachedHttp} from './utils/cached-http';
+import {DvdPage} from './pages/dvd/dvd';
 
 @App({
   templateUrl: 'build/app.html',
@@ -43,7 +44,7 @@ export class MyApp {
   private storage:Storage;
   private nbBookmarked:number = 0;
   constructor(private app:IonicApp,private dataService:DataService,cacheService:CacheService,platform: Platform) {
-    this.pages = [{label: 'Accueil', component: HomePage, icon: 'home'},{label: 'Paramètres', component: SettingsPage, icon: 'settings'}];
+    this.pages = [{label: 'Accueil', component: HomePage, icon: 'home'}];
 
     this.initLocalStorage();
 
@@ -55,7 +56,7 @@ export class MyApp {
 
     platform.ready().then(() => {
       console.log('Platform',platform);
-      StatusBar.styleDefault()
+      StatusBar.styleDefault();
     });
   }
   loadMenuPages():void {
@@ -68,6 +69,9 @@ export class MyApp {
         }
         this.pages.push({label:group.title,component:page,icon:group.iconName,params:{group:group}});
       });
+      this.pages.push({label: 'Paramètres', component: SettingsPage, icon: 'settings'});
+      this.pages.push({label:'Les dvd',component:DvdPage,icon:'disc'});
+      this.pages.push({label:'Youtube',component:'https://www.youtube.com/user/Palmashow',icon:'videocam',redirect:true});
     });
   }
   initLocalStorage():void {
@@ -116,7 +120,11 @@ export class MyApp {
       }
       nav.setRoot(page.component,params);
     } else {
-      nav.setRoot(page.component);
+      if(page.redirect) {
+        window.open(page.component,'_blank');
+      } else {
+        nav.setRoot(page.component);
+      }
     }
 
     this.app.getComponent('leftMenu').close();

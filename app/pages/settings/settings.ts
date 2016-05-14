@@ -65,17 +65,13 @@ export class SettingsPage {
     }
     onClickDeleteData(event:Event):void {
         event.preventDefault();
-        Object.keys(localStorage).forEach((key:string) => {
-            if(key.indexOf('cmd=') !== -1) {
-                this.storage.remove(key).then(() => {
-                    let alert:Alert = Alert.create({
-                        title: 'Suppression réussie !',
-                        subTitle: 'Toutes les données du cache ont été supprimées.',
-                        buttons: [{text: 'Ok', handler: () => {alert.dismiss()}}]
-                    });
-                    this.navController.present(alert);
-                });
-            }
+        this.cacheService.clearCacheData().then(() => {
+            let alert:Alert = Alert.create({
+                title: 'Suppression réussie !',
+                subTitle: 'Toutes les données du cache ont été supprimées.',
+                buttons: [{text: 'Ok', handler: () => {alert.dismiss();}}]
+            });
+            this.navController.present(alert);
         });
     }
 }

@@ -14,16 +14,24 @@ import {CacheService} from './cache.service';
 @Injectable()
 export class DataService {
     users:Array<any>;
+    dvds:Array<any>;
     private serverRoot:string;
     private configs:Array<any>;
     constructor(private http:Http,private cacheService:CacheService) {
         console.log('DataService constructor');
     }
     initConfig(callback:Function):void {
-        this.getConfig().subscribe((configs:Array<any>) =>{
+        this.getConfig().subscribe((configs:Array<any>) => {
             this.configs = configs;
             this.initRootConfig();
             this.getUsers().subscribe(users => this.users = users);
+            this.getDvd().subscribe(dvds => this.dvds = dvds);
+
+            let clearCache:boolean = this.getConfigByKey(Utils.CONFIG_CLEAR_CACHE).value === '1';
+            if(clearCache) {
+                this.cacheService.clearCacheData();
+            }
+
             callback();
         });
     }
@@ -35,7 +43,7 @@ export class DataService {
             this.serverRoot = Utils.DEFAULT_SERVER_HOST;
         }
     }
-    getConfigByKey(key:string):void {
+    getConfigByKey(key:string):any {
         return this.configs.find(current => current.key === key);
     }
     getUrl(key:string,params?:any):any {
@@ -106,6 +114,19 @@ export class DataService {
             });
         }
         return this.http.get(url);
+    }
+    getDvd(clearCache:boolean = false):Observable<any> {
+        let url:string = this.getUrl(Utils.CONFIG_DVD_PATH);
+        if(clearCache) {
+            let cacheKey:string = url.replace(Utils.DEFAULT_SERVER_HOST+'/?','');
+            this.cacheService.storage.remove(cacheKey);
+        }
+        if(this.dvds) {
+            return Observable.create((observer:Observer<any>) => {
+                return observer.next(this.dvds);
+            });
+        }
+        return this.http.get(url,{headers:this.getHeaders()});
     }
     getUserById(id:number):any {
         return this.users.find((user:any) => user.id === id.toString());
