@@ -7,6 +7,7 @@ import {Page,Toggle,Storage,LocalStorage,Alert,NavController,Platform} from 'ion
 import {CacheService} from '../../services/cache.service';
 import * as Utils from '../../utils/app.utils';
 import {NgZone} from 'angular2/core';
+import {AnalyticService} from '../../services/analytics.service';
 
 @Page({
     templateUrl:'build/pages/settings/settings.html',
@@ -16,7 +17,7 @@ export class SettingsPage {
     private useCacheSound:boolean = true;
     private useCacheImage:boolean = true;
     private nbSoundsInCache:number = 0;
-    constructor(private platform:Platform, private navController:NavController,private cacheService:CacheService,private zone:NgZone) {
+    constructor(private platform:Platform, private navController:NavController,private cacheService:CacheService,private zone:NgZone,analyticService:AnalyticService) {
         this.storage = new Storage(LocalStorage);
         this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value) => {
             if(value) {
@@ -28,6 +29,7 @@ export class SettingsPage {
                 this.useCacheImage = value;
             }
         });
+        analyticService.trackView('SettingsPage');
     }
     onPageLoaded():void {
         this.cacheService.soundCache.list().then((list) => this.zone.run(() => this.nbSoundsInCache = list.length));

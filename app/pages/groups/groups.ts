@@ -12,6 +12,7 @@ import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';
 import {SearchFilterPipe} from '../../pipes/pipes';
 import * as Utils from '../../utils/app.utils';
+import {AnalyticService} from '../../services/analytics.service';
 
 @Page({
     templateUrl:'build/pages/groups/groups.html',
@@ -21,10 +22,17 @@ export class GroupsPage {
   groups:Array<any>;
   parentGroup:any;
   sliderOptions:any;
-  constructor(navParams:NavParams,private navController:NavController,private dataService:DataService,private cacheService:CacheService,private elementRef:ElementRef) {
+  constructor(navParams:NavParams,private navController:NavController,private dataService:DataService,private cacheService:CacheService,private elementRef:ElementRef,analyticService:AnalyticService) {
     this.parentGroup = navParams.get('parentGroup');
     this.getGroups(() => {});
     this.sliderOptions = {autoplay:2000,loop:true};
+
+    if(this.parentGroup) {
+      analyticService.trackView('GroupPage - '+this.parentGroup.title);
+    } else {
+      analyticService.trackView('GroupPage');
+    }
+
   }
   getGroups(callback:Function,clearCache:boolean = false):void {
     this.dataService.getChildGroups(this.parentGroup.id,clearCache).subscribe((groups:Array<any>) => {

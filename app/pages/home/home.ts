@@ -5,6 +5,7 @@ import {CacheService} from '../../services/cache.service';
 import {ElementRef,Type} from 'angular2/core';
 import * as Utils from '../../utils/app.utils';
 import {SoundsPage} from '../sounds/sounds';
+import {AnalyticService} from '../../services/analytics.service';
 
 /**
  * home page component
@@ -16,8 +17,9 @@ import {SoundsPage} from '../sounds/sounds';
 })
 export class HomePage {
     groups:Array<any>;
-    constructor(private navController:NavController,private dataService:DataService,private cacheService:CacheService,private events:Events,private elementRef:ElementRef){
+    constructor(private navController:NavController,private dataService:DataService,private cacheService:CacheService,private events:Events,private elementRef:ElementRef, analyticService:AnalyticService) {
         this.getGroups(() => {});
+        analyticService.trackView('HomePage');
     }
     doRefresh(refresher:Refresher) {
         this.getGroups(() => {

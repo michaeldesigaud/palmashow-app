@@ -6,6 +6,7 @@
 interface Window {
     ringtone:any;
     plugins:any;
+    analytics:any;
     resolveLocalFileSystemURL(uri:string,success:Function,error?:Function):void;
 }
 

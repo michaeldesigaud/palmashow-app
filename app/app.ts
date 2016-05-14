@@ -4,6 +4,7 @@ import {GroupsPage} from './pages/groups/groups';
 import {MediaService} from './services/media.service';
 import {DataService} from './services/data.service';
 import {CacheService} from './services/cache.service';
+import {AnalyticService} from './services/analytics.service';
 import {HomePage} from './pages/home/home';
 import {SettingsPage} from './pages/settings/settings';
 import {NavController} from 'ionic-angular/index';
@@ -24,7 +25,7 @@ import {CachedHttp} from './utils/cached-http';
 
 @App({
   templateUrl: 'build/app.html',
-  providers:[MediaService,DataService,CacheService,
+  providers:[MediaService,DataService,CacheService,AnalyticService,
     provide(Http,{
       useFactory:(xhrBackend: XHRBackend, requestOptions: RequestOptions, cacheService:CacheService) => {
         return new CachedHttp(xhrBackend, requestOptions, cacheService);

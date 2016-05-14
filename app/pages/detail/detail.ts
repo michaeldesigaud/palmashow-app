@@ -7,6 +7,7 @@ import {Page,NavParams,Storage,LocalStorage,Events,Alert,Platform,IonicApp,Modal
 import {DataService} from '../../services/data.service';
 import {StringDatePipe} from '../../pipes/pipes';
 import {CacheService} from '../../services/cache.service';
+import {AnalyticService} from '../../services/analytics.service';
 import * as Utils from '../../utils/app.utils';
 import {NavController} from 'ionic-angular/index';
 import {Inject,forwardRef} from 'angular2/core';
@@ -24,7 +25,7 @@ export class Detail {
     private alertOptions:any = {title:'Exporter le son',subTitle:'Sauvegarder le son en tant que sonnerie ou notification'};
     private bookmarked:boolean = false;
     private playing:boolean = true;
-    constructor(@Inject(forwardRef(() => MyApp)) private _parent:MyApp,private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams) {
+    constructor(@Inject(forwardRef(() => MyApp)) private _parent:MyApp,private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams,analyticService:AnalyticService) {
         this.storage = new Storage(LocalStorage);
         this.sound = navParams.get('sound');
         this.sound.loading = true;
@@ -34,6 +35,8 @@ export class Detail {
         this.addListeners();
 
         this.isBookmarked();
+
+        analyticService.trackView('DetailPage - '+this.sound.name);
     }
     getThumbtail(id:number):string {
         let user:any = this.dataService.getUserById(id);

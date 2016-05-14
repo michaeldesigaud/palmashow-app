@@ -8,6 +8,7 @@ import {StringDatePipe,SearchFilterPipe} from '../../pipes/pipes';
 import * as Utils from '../../utils/app.utils';
 import {Detail} from '../detail/detail';
 import {CacheService} from '../../services/cache.service';
+import {AnalyticService} from '../../services/analytics.service';
 
 @Page({
     templateUrl:'build/pages/sounds/sounds.html',
@@ -18,12 +19,14 @@ export class SoundsPage {
     private group:any;
     private sounds:Array<any>;
     private ids:Array<string>;
-    constructor(private navController:NavController,private cacheService:CacheService,private dataService:DataService,navParams:NavParams) {
+    constructor(private navController:NavController,private cacheService:CacheService,private dataService:DataService,navParams:NavParams,analyticService:AnalyticService) {
         this.group = navParams.data.group;
         this.title = navParams.data.title;
         this.ids = navParams.data.ids;
 
         this.getSounds(() => {});
+
+        analyticService.trackView('SoundsPage - '+this.group.title);
     }
     onClickCache(event:Event):void {
         event.stopImmediatePropagation();

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.palmashowsoundboard304839" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.palmashowsoundboard304839" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Palmashow Soundboard</name>
     <description>Les meilleurs sons du Palmashow</description>
     <author email="michaeldesigaud@gmail.com" href="http://www.redfroggy.fr/">RedFroggy Team</author>
@@ -61,6 +61,10 @@
         <param name="ios-package" value="SocialSharing" />
         <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
     </feature>
+    <feature name="UniversalAnalytics">
+        <param name="ios-package" value="UniversalAnalyticsPlugin" />
+        <param name="android-package" value="com.danielcwilson.plugins.analytics.UniversalAnalyticsPlugin" />
+    </feature>
     <plugin name="cordova-plugin-device" spec="~1.1.1" />
     <plugin name="cordova-plugin-console" spec="~1.0.2" />
     <plugin name="cordova-plugin-whitelist" spec="~1.2.1" />
@@ -71,6 +75,6 @@
     <plugin name="cordova-plugin-file-transfer" spec="~1.5.1" />
     <plugin name="com.hiraqui.ringtone" spec="0.6.1" />
     <plugin name="cordova-plugin-x-socialsharing" source="npm" />
-    <plugin name="cordova-plugin-crosswalk-webview" source="npm" />
+    <plugin name="cordova-plugin-google-analytics" source="npm" />
     <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
 </widget>
