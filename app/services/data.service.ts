@@ -24,16 +24,20 @@ export class DataService {
         this.getConfig().subscribe((configs:Array<any>) => {
             this.configs = configs;
             this.initRootConfig();
-            this.getUsers().subscribe(users => this.users = users);
-            this.getDvd().subscribe(dvds => this.dvds = dvds);
 
             let clearCache:boolean = this.getConfigByKey(Utils.CONFIG_CLEAR_CACHE).value === '1';
             if(clearCache) {
-                this.cacheService.clearCacheData();
+                this.cacheService.clearCacheData().then(() => this.initData());
+            } else {
+                this.initData();
             }
 
             callback();
         });
+    }
+    initData():void {
+        this.getUsers().subscribe(users => this.users = users);
+        this.getDvd().subscribe(dvds => this.dvds = dvds);
     }
     initRootConfig():void {
         let config:any = this.getConfigByKey(Utils.CONFIG_SERVER_URL);
