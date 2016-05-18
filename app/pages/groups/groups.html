@@ -19,11 +19,6 @@
         </ion-refresher-content>
     </ion-refresher>
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
-    <ion-slides [options]="sliderOptions" style="height: auto;" pager>
-        <ion-slide *ngFor="#group of groups">
-            <img src="{{group.imageName}}" (click)="onSelectSlide($event)">
-        </ion-slide>
-    </ion-slides>
     <ion-list no-border>
         <ion-item *ngFor="#group of groups | searchFilter:{title:searchQuery}" (click)="onClickListen($event,group)">
             <h2>{{group.title}}</h2>
