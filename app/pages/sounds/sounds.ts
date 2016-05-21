@@ -20,9 +20,14 @@ export class SoundsPage {
     private sounds:Array<any>;
     private ids:Array<string>;
     constructor(private navController:NavController,private cacheService:CacheService,private dataService:DataService,navParams:NavParams,analyticService:AnalyticService) {
+        console.log(navParams);
         this.group = navParams.data.group;
         this.title = navParams.data.title;
         this.ids = navParams.data.ids;
+
+        if(this.ids) {
+            this.group = {title:'Favoris'};
+        }
 
         this.getSounds(() => {});
 
@@ -32,12 +37,12 @@ export class SoundsPage {
         event.stopImmediatePropagation();
     }
     getSounds(callback:Function,clearCache:boolean = false):void {
-        if(this.group) {
+        if(!this.ids) {
             this.dataService.getSounds(this.group.id,clearCache).subscribe((sounds:Array<any>) => {
                 this.sounds = sounds;
                 callback();
             });
-        } else if(this.ids){
+        } else {
             this.dataService.getSoundsByIds(this.ids,clearCache).subscribe((sounds:Array<any>) => {
                 this.sounds = sounds;
                 callback();

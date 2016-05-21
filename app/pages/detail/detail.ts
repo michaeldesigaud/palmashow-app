@@ -25,7 +25,7 @@ export class Detail {
     private alertOptions:any = {title:'Exporter le son',subTitle:'Sauvegarder le son en tant que sonnerie ou notification'};
     private bookmarked:boolean = false;
     private playing:boolean = true;
-    constructor(@Inject(forwardRef(() => MyApp)) private _parent:MyApp,private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams,analyticService:AnalyticService) {
+    constructor(@Inject(forwardRef(() => MyApp)) private _parent:MyApp,private dataService:DataService,private cacheService:CacheService, private events:Events,private navController:NavController,private platform:Platform, navParams:NavParams,private analyticService:AnalyticService) {
         this.storage = new Storage(LocalStorage);
         this.sound = navParams.get('sound');
         this.sound.loading = true;
@@ -148,15 +148,19 @@ export class Detail {
         alert.addButton({
             text: 'Ok',
             handler: data => {
+
+                let playStoreUrlConfig:any = this.dataService.getConfigByKey(Utils.PLAY_STORE_URL);
+
+                this.analyticService.trackEvent('DetailPage','Share',data,this.sound.name);
+
                 let fileUri:string = cordova.file.externalRootDirectory+this.cacheService.soundCache.toPath(this.sound.file);
-                let message:string = 'Enorme ce son de l\'application Palmashow Soundboard !';
+                let message:string = 'Enorme le son "'+this.sound.name+'" de l\'application Palmashow Soundboard ! '+playStoreUrlConfig.value;
                 if(data === 'twitter') {
-                    window.plugins.socialsharing.shareViaTwitter(message+this.sound.file);
+                    window.plugins.socialsharing.shareViaTwitter(message);
                 }
                 if(data === 'email') {
                     console.log('Attachment file',fileUri);
-                    window.plugins.socialsharing.shareViaEmail(message,'Palmashow Soundboard: '+this.sound.name,null,null,null,
-                        this.cacheService.getCachedSoundPath(this.sound));
+                    window.plugins.socialsharing.shareViaEmail(message,'Palmashow Soundboard: '+this.sound.name,null,null,null);
                 }
                 if(data === 'facebook') {
                     window.plugins.socialsharing.shareViaFacebook(message);

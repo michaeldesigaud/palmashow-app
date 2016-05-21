@@ -23,6 +23,7 @@ export const CONFIG_SOUNDS_BY_IDS_PATH:string = 'SOUNDS_BY_IDS_PATH';
 export const CONFIG_USERS_PATH:string = 'CONFIG_USERS_PATH';
 export const CONFIG_CLEAR_CACHE:string = 'CLEAR_CACHE';
 export const CONFIG_DVD_PATH:string = 'DVD_PATH';
+export const PLAY_STORE_URL:string = 'PLAY_STORE_URL';
 export const CONFIG_PATH:string = '?cmd=config';
 
 export const GOOGLE_ANALYTICS_UAID:string = 'UA-60075836-3';

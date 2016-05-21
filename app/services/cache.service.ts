@@ -39,7 +39,7 @@ export class CacheService {
         });
     }
     soundInCache(url:string):boolean {
-        return this.soundCache.get(url) !== url;
+        return url && this.soundCache.get(url) !== url;
     }
     clearCacheImage(callback:Function):void {
         ImgCache.clearCache(callback);

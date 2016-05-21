@@ -22,7 +22,7 @@ export class AnalyticService {
             }
         });
     }
-    trackEvent(category:string,action:string):void {
+    trackEvent(category:string,action:string,label?:string,value?:string):void {
         this.platform.ready().then(() => {
             if(window.analytics) {
                 window.analytics.trackEvent(category, action);
