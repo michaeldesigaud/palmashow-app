@@ -9,6 +9,7 @@ import * as Utils from '../../utils/app.utils';
 import {Detail} from '../detail/detail';
 import {CacheService} from '../../services/cache.service';
 import {AnalyticService} from '../../services/analytics.service';
+import {NgZone} from 'angular2/core';
 
 @Page({
     templateUrl:'build/pages/sounds/sounds.html',
@@ -19,8 +20,7 @@ export class SoundsPage {
     private group:any;
     private sounds:Array<any>;
     private ids:Array<string>;
-    constructor(private navController:NavController,private cacheService:CacheService,private dataService:DataService,navParams:NavParams,analyticService:AnalyticService) {
-        console.log(navParams);
+    constructor(private navController:NavController,private cacheService:CacheService,private dataService:DataService,private zone:NgZone,navParams:NavParams,analyticService:AnalyticService) {
         this.group = navParams.data.group;
         this.title = navParams.data.title;
         this.ids = navParams.data.ids;
@@ -43,7 +43,8 @@ export class SoundsPage {
                 callback();
             });
         } else {
-            this.dataService.getSoundsByIds(this.ids,clearCache).subscribe((sounds:Array<any>) => {
+            this.dataService.getSoundsByIds(this.ids,true).subscribe((sounds:Array<any>) => {
+                console.log(sounds);
                 this.sounds = sounds;
                 callback();
             });
