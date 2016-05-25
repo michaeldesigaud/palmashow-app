@@ -20,7 +20,7 @@
     </ion-refresher>
     <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
     <ion-list no-border>
-        <ion-item *ngFor="#group of groups | searchFilter:{title:searchQuery}" (click)="onClickListen($event,group)">
+        <ion-item *ngFor="let group of groups | searchFilter:{title:searchQuery}" (click)="onClickListen($event,group)">
             <h2>{{group.title}}</h2>
             <p [innerHtml]="group.description"></p>
             <p *ngIf="group.items"><small><i>{{group.items}}</i></small></p>

@@ -2,8 +2,8 @@
  * StringDate pipe
  * Created by Michael DESIGAUD on 27/04/2016.
  */
-import {Pipe, PipeTransform} from 'angular2/core';
-import {DatePipe} from 'angular2/common';
+import {Pipe, PipeTransform} from '@angular/core';
+import {DatePipe} from '@angular/common';
 
 @Pipe({
     name: 'stringDate'

@@ -28,4 +28,4 @@ export const CONFIG_PATH:string = '?cmd=config';
 
 export const GOOGLE_ANALYTICS_UAID:string = 'UA-60075836-3';
 
-export const DEFAULT_SERVER_HOST:string = 'server_url';
+export const DEFAULT_SERVER_HOST:string = 'http://bobbysixkiller1987.free.fr/palmashow/data.php';

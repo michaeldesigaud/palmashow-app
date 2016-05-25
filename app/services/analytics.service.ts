@@ -2,7 +2,7 @@
  * Analytic service
  * Created by Michael DESIGAUD on 13/05/2016.
  */
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Platform} from 'ionic-angular/index';
 import * as Utils from '../utils/app.utils';
 

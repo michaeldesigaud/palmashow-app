@@ -3,7 +3,7 @@
  * Created by Michael DESIGAUD on 10/05/2016.
  */
 
-import {Http,RequestOptionsArgs,Response,ConnectionBackend,RequestOptions} from 'angular2/http';
+import {Http,RequestOptionsArgs,Response,ConnectionBackend,RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {CacheService} from '../services/cache.service';
 import * as Utils from './app.utils';

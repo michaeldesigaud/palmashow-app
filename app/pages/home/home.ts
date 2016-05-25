@@ -2,7 +2,7 @@ import {Page,NavController,Platform,Refresher,Events} from 'ionic-angular/index'
 import {GroupsPage} from '../groups/groups';
 import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';
-import {ElementRef,Type} from 'angular2/core';
+import {ElementRef,Type} from '@angular/core';
 import * as Utils from '../../utils/app.utils';
 import {SoundsPage} from '../sounds/sounds';
 import {AnalyticService} from '../../services/analytics.service';

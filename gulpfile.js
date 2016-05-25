@@ -63,7 +63,9 @@ gulp.task('scripts',function(){
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/cordova-promise-fs/dist/CordovaPromiseFS.js',
         'node_modules/cordova-file-cache/dist/CordovaFileCache.js',
-        'node_modules/moment/min/moment.min.js'
+        'node_modules/moment/min/moment.min.js',
+        'node_modules/zone.js/dist/zone.min.js',
+        'node_modules/reflect-metadata/temp/Reflect.js'
     ]
     });
 });

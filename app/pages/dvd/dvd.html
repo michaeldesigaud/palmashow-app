@@ -11,7 +11,7 @@
 </ion-navbar>
 <ion-content class="has-header">
     <ion-list no-border *ngIf="dvds && dvds.length > 0">
-        <ion-item *ngFor="#dvd of dvds">
+        <ion-item *ngFor="let dvd of dvds">
             <ion-thumbnail item-left>
                 <img src="{{dvd.image}}">
             </ion-thumbnail>

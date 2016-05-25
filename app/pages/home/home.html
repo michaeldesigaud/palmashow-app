@@ -18,7 +18,7 @@
                 refreshingText="Chargement...">
         </ion-refresher-content>
     </ion-refresher>
-    <ion-card *ngFor="#group of groups" (click)="goToGroupsPage(group)">
+    <ion-card *ngFor="let group of groups" (click)="goToGroupsPage(group)">
         <ion-card-content>
             <ion-card-title>{{group.title}}</ion-card-title>
             <p>{{group.description}}</p>

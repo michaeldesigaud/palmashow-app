@@ -3,7 +3,7 @@
  * Created by Michael DESIGAUD on 20/04/2016.
  */
 
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Events,Platform} from 'ionic-angular/index';
 import * as Utils from '../utils/app.utils';

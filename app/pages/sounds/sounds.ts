@@ -9,7 +9,7 @@ import * as Utils from '../../utils/app.utils';
 import {Detail} from '../detail/detail';
 import {CacheService} from '../../services/cache.service';
 import {AnalyticService} from '../../services/analytics.service';
-import {NgZone} from 'angular2/core';
+import {NgZone} from '@angular/core';
 
 @Page({
     templateUrl:'build/pages/sounds/sounds.html',

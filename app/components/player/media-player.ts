@@ -1,6 +1,5 @@
-import {Component,ElementRef,ViewEncapsulation} from 'angular2/core';
+import {Component,ElementRef,ViewEncapsulation} from '@angular/core';
 import {MediaService} from '../../services/media.service';
-import {DOM} from "angular2/src/platform/dom/dom_adapter";
 
 /**
  * Player component
@@ -13,7 +12,7 @@ import {DOM} from "angular2/src/platform/dom/dom_adapter";
 export class MediaPlayer {
     constructor(private mediaService:MediaService,private el:ElementRef) {}
     ngOnInit():void {
-        this.mediaService.setMedia(DOM.firstChild(this.el.nativeElement));
+        this.mediaService.setMedia($(this.el.nativeElement).children()[0]);
     }
     play(sound:any) {
         sound.playing = false;

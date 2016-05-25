@@ -6,7 +6,7 @@
 import {Page,Toggle,Storage,LocalStorage,Alert,NavController,Platform} from 'ionic-angular/index';
 import {CacheService} from '../../services/cache.service';
 import * as Utils from '../../utils/app.utils';
-import {NgZone} from 'angular2/core';
+import {NgZone} from '@angular/core';
 import {AnalyticService} from '../../services/analytics.service';
 
 @Page({

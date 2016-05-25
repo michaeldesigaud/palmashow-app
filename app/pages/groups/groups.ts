@@ -4,9 +4,9 @@
  */
 
 import {Page,NavController,NavParams,Refresher} from 'ionic-angular/index';
-import {Http,Response} from 'angular2/http';
+import {Http,Response} from '@angular/http';
 
-import {ElementRef} from 'angular2/core';
+import {ElementRef} from '@angular/core';
 import {SoundsPage} from '../sounds/sounds';
 import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';

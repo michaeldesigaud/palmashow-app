@@ -3,7 +3,7 @@
  * Created by Michael DESIGAUD on 25/04/2016.
  */
 
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Platform,Events,Storage,LocalStorage} from 'ionic-angular/index';
 import * as Utils from '../utils/app.utils';
 

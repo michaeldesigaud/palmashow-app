@@ -1,4 +1,4 @@
-import {App, Platform,IonicApp,LocalStorage,Storage,Alert} from 'ionic-angular';
+import {App, Platform,IonicApp,LocalStorage,Storage,Alert,NavController,Nav,Menu} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {GroupsPage} from './pages/groups/groups';
 import {MediaService} from './services/media.service';
@@ -7,22 +7,21 @@ import {CacheService} from './services/cache.service';
 import {AnalyticService} from './services/analytics.service';
 import {HomePage} from './pages/home/home';
 import {SettingsPage} from './pages/settings/settings';
-import {NavController} from 'ionic-angular/index';
-import {Type,ViewChild,provide} from 'angular2/core';
+import {Type,ViewChild,provide} from '@angular/core';
 import  * as Utils from './utils/app.utils';
+
+import {SoundsPage} from './pages/sounds/sounds';
+import {LOCAL_STORAGE_BOOKMARK} from './utils/app.utils';
+import {MediaPlayer} from './components/player/media-player';
+import {Http,XHRBackend,RequestOptions} from '@angular/http';
+import {CachedHttp} from './utils/cached-http';
+import {DvdPage} from './pages/dvd/dvd';
 
 import 'es6-shim';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/toPromise';
-
-import {SoundsPage} from './pages/sounds/sounds';
-import {LOCAL_STORAGE_BOOKMARK} from './utils/app.utils';
-import {MediaPlayer} from './components/player/media-player';
-import {Http,XHRBackend,RequestOptions} from 'angular2/http';
-import {CachedHttp} from './utils/cached-http';
-import {DvdPage} from './pages/dvd/dvd';
 
 @App({
   templateUrl: 'build/app.html',
@@ -39,6 +38,8 @@ import {DvdPage} from './pages/dvd/dvd';
 })
 export class MyApp {
   @ViewChild(MediaPlayer) mediaPlayer:MediaPlayer;
+  @ViewChild(Nav) nav:Nav;
+  @ViewChild(Menu) menu:Menu;
   private rootPage:any;
   private pages:Array<any>;
   private storage:Storage;
@@ -50,7 +51,6 @@ export class MyApp {
 
     this.dataService.initConfig(() => {
       this.loadMenuPages();
-      let nav:NavController = this.app.getComponent('nav');
       this.rootPage = HomePage;
     });
 
@@ -91,24 +91,22 @@ export class MyApp {
   }
   openBookmarkPage():void {
     this.storage.getJson(LOCAL_STORAGE_BOOKMARK).then((ids:Array<string>) => {
-      let nav:NavController = this.app.getComponent('nav');
       if(ids && $.isArray(ids) && ids.length > 0) {
-        nav.setRoot(SoundsPage,{title:'Favoris',ids:ids});
+        this.nav.setRoot(SoundsPage,{title:'Favoris',ids:ids});
       } else {
         let alert = Alert.create({
           title: 'Favoris',
           subTitle: 'Aucun favoris enregistré',
           buttons: ['Ok']
         });
-        nav.present(alert);
+        this.nav.present(alert);
       }
     });
-    this.app.getComponent('leftMenu').close();
+    this.menu.close();
   }
   openPage(page:any):void {
     // navigate to the new page if it is not the current page
-    this.app.getComponent('leftMenu').enable(true);
-    let nav:NavController = this.app.getComponent('nav');
+    this.menu.enable(true);
     if(page.params) {
       let params:any = {};
       if(page.params.group.sub_groups === '0') {
@@ -118,15 +116,15 @@ export class MyApp {
       } else {
         params.parentGroup = page.params.group;
       }
-      nav.setRoot(page.component,params);
+      this.nav.setRoot(page.component,params);
     } else {
       if(page.redirect) {
         window.open(page.component,'_blank');
       } else {
-        nav.setRoot(page.component);
+        this.nav.setRoot(page.component);
       }
     }
 
-    this.app.getComponent('leftMenu').close();
+    this.menu.close();
   }
 }

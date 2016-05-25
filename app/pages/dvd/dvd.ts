@@ -6,7 +6,7 @@
 import {Page,Refresher} from 'ionic-angular/index';
 import {DataService} from '../../services/data.service';
 import {CacheService} from '../../services/cache.service';
-import {ElementRef} from 'angular2/core';
+import {ElementRef} from '@angular/core';
 
 @Page({
     templateUrl:'build/pages/dvd/dvd.html'
