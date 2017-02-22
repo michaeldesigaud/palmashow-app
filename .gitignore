@@ -3,7 +3,6 @@
 
 node_modules/
 build/
-build_scripts/
 www/
 .idea/
 *.iml
