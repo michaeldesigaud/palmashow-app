@@ -5,7 +5,7 @@
 
 import {Platform,IonicApp,Nav,Menu,AlertController} from 'ionic-angular';
 import {Storage} from '@ionic/storage';
-import {StatusBar} from 'ionic-native';
+import {StatusBar,Push} from 'ionic-native';
 import {GroupsPage} from '../pages/groups/groups';
 import {HomePage} from '../pages/home/home';
 import {SettingsPage} from '../pages/settings/settings';
@@ -36,7 +36,8 @@ export class PalmashowApp {
     private rootPage:any;
     private pages:Array<any>;
     private nbBookmarked:number = 0;
-    constructor(private app:IonicApp,private dataService:DataService,private storage:Storage,private alertCtrl: AlertController,platform: Platform) {
+    constructor(private app:IonicApp,private dataService:DataService,private storage:Storage,
+                private alertCtrl: AlertController,private platform: Platform) {
         this.pages = [{label: 'Accueil', component: HomePage, icon: 'home'}];
 
         this.initLocalStorage();
@@ -49,6 +50,33 @@ export class PalmashowApp {
         platform.ready().then(() => {
             console.log('Platform',platform);
             StatusBar.styleDefault();
+            this.initPushNotification();
+        });
+    }
+    initPushNotification(): void {
+
+        let push = Push.init({
+            android: {
+                senderID: "784104879538"
+            },
+            ios: {
+                alert: "true",
+                badge: false,
+                sound: "true"
+            },
+            windows: {}
+        });
+
+        push.on('registration', (data) => {
+            console.log("device token ->", data.registrationId);
+        });
+
+        push.on('notification', (data) => {
+            console.log('message', data.message);
+        });
+
+        push.on('error', (e) => {
+            console.log(e.message);
         });
     }
     loadMenuPages():void {
