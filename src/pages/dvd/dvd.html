@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar class="show-navbar" color="primary">
+        <button menuToggle>
+            <ion-icon name='menu'></ion-icon>
+        </button>
+        <ion-title>Les DVD</ion-title>
+        <ion-buttons end>
+            <button (click)="doRefresh()">
+                <ion-icon name='refresh'></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content class="has-header">
+    <ion-list no-border *ngIf="dvds && dvds.length > 0">
+        <ion-item *ngFor="let dvd of dvds">
+            <ion-thumbnail item-left>
+                <img src="{{dvd.image}}">
+            </ion-thumbnail>
+            <h3>{{dvd.title}}</h3>
+            <button clear item-right (click)="onClickDvd($event,dvd)">Voir</button>
+        </ion-item>
+    </ion-list>
+</ion-content>

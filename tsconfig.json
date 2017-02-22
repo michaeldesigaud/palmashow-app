@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": false
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "sourceMap": true
   },
   "filesGlob": [
     "./app/**/*.ts",
@@ -13,9 +16,10 @@
     "typings/browser.d.ts"
   ],
   "exclude": [
-    "node_modules",
-    "typings/main.d.ts",
-    "typings/main"
+    "node_modules"
+  ],
+  "types":[
+    "core-js"
   ],
   "compileOnSave": false,
   "atom": {
