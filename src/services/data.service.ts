@@ -17,9 +17,7 @@ export class DataService {
     dvds:Array<any>;
     private serverRoot:string;
     private configs:Array<any>;
-    constructor(private http:Http,private cacheService:CacheService) {
-        console.log('DataService constructor');
-    }
+    constructor(private http:Http,private cacheService:CacheService) {}
     initConfig(callback:Function):void {
         this.getConfig().subscribe((configs:Array<any>) => {
             this.configs = configs;

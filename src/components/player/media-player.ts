@@ -9,7 +9,7 @@ import * as $ from 'jquery';
  */
 @Component({
     selector:'media-player',
-    template:'<audio controls="controls" preload="auto" id="mediaPlayer"></audio>'
+    template:'<audio controls="controls" preload="auto" id="mediaPlayer" style="width: 100%"></audio>'
 })
 export class MediaPlayer {
     constructor(private mediaService:MediaService,private el:ElementRef) {}

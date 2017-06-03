@@ -46,7 +46,9 @@ export class SettingsPage {
             let alert:Alert = this.alertController.create({
                 title: 'Suppression réussie !',
                 subTitle: 'Tous les sons du cache ont été supprimés.',
-                buttons: [{text: 'Ok', handler: () => alert.dismiss()}]
+                buttons: [{text: 'Ok', handler: () => {
+                    alert.dismiss();
+                }}]
             });
             alert.present();
             this.nbSoundsInCache = 0;
@@ -58,7 +60,9 @@ export class SettingsPage {
             let alert:Alert = this.alertController.create({
                 title: 'Suppression réussie !',
                 subTitle: 'Toutes les images du cache ont été supprimées.',
-                buttons: [{text: 'Ok', handler: () => alert.dismiss()}]
+                buttons: [{text: 'Ok', handler: () => {
+                    alert.dismiss();
+                }}]
             });
             alert.present();
         });

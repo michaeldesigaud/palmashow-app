@@ -76,8 +76,5 @@
   <plugin name="com.hiraqui.ringtone" spec="0.6.1"/>
   <plugin name="cordova-plugin-x-socialsharing" source="npm"/>
   <plugin name="cordova-plugin-google-analytics" source="npm"/>
-  <plugin name="phonegap-plugin-push" spec="1.8.2">
-    <variable name="SENDER_ID" value="784104879538"/>
-  </plugin>
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>

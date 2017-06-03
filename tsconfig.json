@@ -7,19 +7,21 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "declaration": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "noImplicitAny": false
   },
-  "filesGlob": [
-    "./app/**/*.ts",
-    "app/custom-typings.d.ts",
-    "!./node_modules/**/*.ts",
-    "typings/browser.d.ts"
+  "include": [
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
   ],
   "types":[
-    "core-js"
+    "jquery"
   ],
   "compileOnSave": false,
   "atom": {

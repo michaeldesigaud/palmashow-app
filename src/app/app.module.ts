@@ -4,12 +4,14 @@
  */
 
 import { NgModule } from '@angular/core';
-import {Http,XHRBackend,RequestOptions} from '@angular/http';
+import {Http,XHRBackend,RequestOptions, HttpModule} from '@angular/http';
+
+import { BrowserModule } from '@angular/platform-browser';
 
 import { PalmashowApp } from './app.component';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { MediaPlayer } from '../components/player/media-player';
 
@@ -45,7 +47,10 @@ import {SearchFilterPipe} from '../pipes/pipes';
         SoundsPage
     ],
     imports: [
-        IonicModule.forRoot(PalmashowApp)
+        BrowserModule,
+        HttpModule,
+        IonicModule.forRoot(PalmashowApp),
+        IonicStorageModule.forRoot()
     ],
     exports: [
         IonicModule
@@ -61,7 +66,7 @@ import {SearchFilterPipe} from '../pipes/pipes';
         SettingsPage,
         SoundsPage
     ],
-    providers:[Storage, MediaService,DataService,CacheService,AnalyticService,
+    providers:[MediaService,DataService,CacheService,AnalyticService,
         {
             provide: Http,
             useFactory:(xhrBackend: XHRBackend, requestOptions: RequestOptions, cacheService:CacheService) => {

@@ -5,7 +5,7 @@
 
 import {Platform,IonicApp,Nav,Menu,AlertController} from 'ionic-angular';
 import {Storage} from '@ionic/storage';
-import {StatusBar,Push} from 'ionic-native';
+
 import {GroupsPage} from '../pages/groups/groups';
 import {HomePage} from '../pages/home/home';
 import {SettingsPage} from '../pages/settings/settings';
@@ -49,34 +49,6 @@ export class PalmashowApp {
 
         platform.ready().then(() => {
             console.log('Platform',platform);
-            StatusBar.styleDefault();
-            this.initPushNotification();
-        });
-    }
-    initPushNotification(): void {
-
-        let push = Push.init({
-            android: {
-                senderID: "784104879538"
-            },
-            ios: {
-                alert: "true",
-                badge: false,
-                sound: "true"
-            },
-            windows: {}
-        });
-
-        push.on('registration', (data) => {
-            console.log("device token ->", data.registrationId);
-        });
-
-        push.on('notification', (data) => {
-            console.log('message', data.message);
-        });
-
-        push.on('error', (e) => {
-            console.log(e.message);
         });
     }
     loadMenuPages():void {
