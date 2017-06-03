@@ -1,21 +1,27 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": false
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "sourceMap": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "noImplicitAny": false
   },
-  "filesGlob": [
-    "./app/**/*.ts",
-    "app/custom-typings.d.ts",
-    "!./node_modules/**/*.ts",
-    "typings/browser.d.ts"
+  "include": [
+    "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "typings/main.d.ts",
-    "typings/main"
+    "node_modules"
+  ],
+  "types":[
+    "jquery"
   ],
   "compileOnSave": false,
   "atom": {

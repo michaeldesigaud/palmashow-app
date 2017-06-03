@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>Palmashow soundboard</title>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#387ef5">
+
+  <link href="build/main.css" rel="stylesheet">
+  <link href="libs/font-awesome.min.css" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/img/icon.png">
+</head>
+<body>
+
+  <!-- this Ionic's root component and where the app will load -->
+  <ion-app></ion-app>
+
+  <!-- cordova.js required for cordova apps -->
+  <script src="cordova.js"></script>
+
+  <!-- Cordova promise FS -->
+  <script src="libs/CordovaPromiseFS.js"></script>
+  <!-- Cordova file cache -->
+  <script src="libs/CordovaFileCache.js"></script>
+  <!-- jquery -->
+  <script src="libs/jquery.js"></script>
+  <!-- moment -->
+  <script src="libs/moment.js"></script>
+  <!-- img cache -->
+  <script src="libs/imgcache.js"></script>
+
+  <!-- Polyfill -->
+  <script src="build/polyfills.js"></script>
+
+  <!-- the bundle which is built from the app's source code -->
+  <script src="build/main.js"></script>
+</body>
+</html>

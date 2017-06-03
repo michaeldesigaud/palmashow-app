@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-navbar class="show-navbar" color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name='menu'></ion-icon>
+        </button>
+        <ion-title>Settings</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-list-header>Cache</ion-list-header>
+    <ion-list>
+        <ion-item>
+            <ion-label>Sons en cache à la lecture</ion-label>
+            <ion-toggle (change)="onChangeToggleSound($event)" [(ngModel)]="useCacheSound"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>Images en cache à l'affichage</ion-label>
+            <ion-toggle (change)="onChangeToggleImage($event)" [(ngModel)]="useCacheImage"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <h2>Supprimer les données texte</h2>
+            <p>Supprimer toutes les données texte du cache</p>
+            <button ion-button icon-left color="danger" (click)="onClickDeleteData($event)"><ion-icon name="document"></ion-icon> Supprimer</button>
+        </ion-item>
+        <ion-item>
+            <h2>Supprimer les sons</h2>
+            <p>Supprimer tous les sons du cache</p>
+            <ion-badge item-right>{{nbSoundsInCache}}</ion-badge>
+            <button ion-button icon-left color="danger" (click)="onClickDeleteSounds($event)"><ion-icon name="musical-notes"></ion-icon> Supprimer</button>
+        </ion-item>
+        <ion-item>
+            <h2>Supprimer les images</h2>
+            <p>Supprimer toutes les images du cache</p>
+            <button ion-button icon-left color="danger" (click)="onClickDeleteImages($event)"><ion-icon name="image"></ion-icon> Supprimer</button>
+        </ion-item>
+    </ion-list>
+</ion-content>

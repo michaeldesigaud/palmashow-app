@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-navbar class="show-navbar" color="primary">
+        <button ion-button icon-only menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{title}}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="doRefresh()">
+                <ion-icon name="refresh"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content class="has-header">
+    <ion-refresher (refresh)="doRefresh($event)">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Glisser vers le bas pour rafrâichir"
+                refreshingSpinner="circles"
+                refreshingText="Chargement...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-searchbar [(ngModel)]="searchQuery"></ion-searchbar>
+    <ion-list no-border *ngIf="sounds && sounds.length > 0">
+        <ion-item *ngFor="let sound of sounds | searchFilter:{name:searchQuery}" (click)="onPlay($event,sound)">
+            <h2>{{sound.name}}</h2>
+            <p *ngIf="sound.user_id">{{getUsername(sound.user_id)}}</p>
+            <p>Ajouté le {{sound.creation_date | stringDate:'shortDate'}}</p>
+            <button outline color="secondary" item-right (click)="onClickCache($event)" *ngIf="cacheService.soundInCache(sound.file)"><ion-icon name="archive"></ion-icon> Cache</button>
+        </ion-item>
+    </ion-list>
+</ion-content>

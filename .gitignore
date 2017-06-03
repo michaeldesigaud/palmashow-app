@@ -2,12 +2,11 @@
 # http://git-scm.com/docs/gitignore
 
 node_modules/
-www/build/
 platforms/
-plugins/
-typings/
+build/
+www/
 .idea/
 *.iml
-app/**/*.js
-app/**/*.js.map
+src/**/*.js
+src/**/*.js.map
 npm-debug.log
