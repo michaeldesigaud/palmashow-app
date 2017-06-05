@@ -4,8 +4,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Events,Platform} from 'ionic-angular/index';
+import {Events, Loading, LoadingController, Platform} from 'ionic-angular/index';
 import * as Utils from '../utils/app.utils';
 import {CacheService} from './cache.service';
 
@@ -14,14 +13,26 @@ export class MediaService {
     media:any;
     lastSound:any;
     currentSound:any;
-    constructor(private events:Events,private cacheService:CacheService,private platform:Platform) {}
+    private loading: Loading;
+    constructor(private events:Events,private cacheService:CacheService,private platform:Platform, private loadingCtrl:LoadingController) {}
     setMedia(media:any) {
         this.media = media;
-        this.media.addEventListener('playing',() => this.events.publish(Utils.EVENT_MEDIA_PLAYING,this.currentSound));
+        this.media.addEventListener('playing',() => {
+            this.events.publish(Utils.EVENT_MEDIA_PLAYING,this.currentSound);
+            this.loading.dismiss();
+        });
         this.media.addEventListener('ended', () => this.events.publish(Utils.EVENT_MEDIA_END,this.currentSound));
+        this.media.addEventListener('progress', () => {
+            //Show loader
+            this.loading = this.loadingCtrl.create({
+                content: 'Téléchargement du sound "'+this.currentSound.name+'"...'
+            });
+
+            this.loading.present();
+        });
     }
     stop():void {
-        this.events.publish('media:end',this.lastSound);
+        this.events.publish(Utils.EVENT_MEDIA_END,this.lastSound);
         this.media.pause();
         console.log('Stop current media',this.media);
         this.media.currentTime = 0;
@@ -33,7 +44,7 @@ export class MediaService {
         return this.currentSound && newSound.id === this.currentSound.id;
     }
     play(newSound:any):void {
-        console.log('Start sound',newSound);
+        console.log('Playing sound',newSound);
 
         let soundPlaying:boolean = this.isPlaying() && this.isCurrentSound(newSound);
 
@@ -44,7 +55,6 @@ export class MediaService {
             this.currentSound = newSound;
 
             if (this.platform.is('cordova')) {
-                console.log('cordova');
                 if (!this.cacheService.soundInCache(newSound.file)) {
                     this.media.src = newSound.file;
                 } else {
@@ -65,7 +75,7 @@ export class MediaService {
 
             this.lastSound = newSound;
         } else {
-            console.log('This song is playing already');
+            console.info('This song is already in play');
             this.currentSound.loading = false;
             this.currentSound.playing = true;
             this.events.publish(Utils.EVENT_MEDIA_PLAYING,this.currentSound);

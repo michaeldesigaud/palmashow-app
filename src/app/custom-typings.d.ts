@@ -7,11 +7,13 @@ interface Window {
     ringtone:any;
     plugins:any;
     analytics:any;
+    cordova: Cordova;
     resolveLocalFileSystemURL(uri:string,success:Function,error?:Function):void;
 }
 
 interface Cordova {
     file:any;
+    plugins: any;
 }
 
 interface Navigator {

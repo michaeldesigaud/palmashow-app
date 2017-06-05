@@ -48,7 +48,7 @@ export class PalmashowApp {
         });
 
         platform.ready().then(() => {
-            console.log('Platform',platform);
+            console.log('Platform is ready',platform);
         });
     }
     loadMenuPages():void {

@@ -8,12 +8,14 @@ export const EVENT_CACHE_IMAGE_LOADED:string = 'cache:imageLoaded';
 
 export const EVENT_MEDIA_PLAYING:string = 'media:playing';
 export const EVENT_MEDIA_END:string = 'media:end';
+export const EVENT_MEDIA_PROGRESS:string = 'media:progress';
 
 export const LOCAL_STORAGE_USE_CACHE_SOUND:string = 'USE_CACHE_SOUND';
 export const LOCAL_STORAGE_USE_CACHE_IMAGE:string = 'USE_CACHE_IMAGE';
 export const LOCAL_STORAGE_BOOKMARK:string = 'BOOKMARKS';
 
-export const RINGTONE_DEFAULT_NAME:string = 'palmashow_';
+export const RINGTONE_FOLDER:string = 'Ringtones';
+export const NOTIFICATION_FOLDER:string = 'Notifications';
 
 export const CONFIG_SERVER_URL:string = 'SERVER_URL';
 export const CONFIG_CHILD_GROUPS_PATH:string = 'CHILD_GROUPS_PATH';

@@ -3,7 +3,9 @@
  * Created by Michael DESIGAUD on 29/04/2016.
  */
 
-import {NavParams, Events, Alert, Platform, Modal, AlertController, ModalController} from 'ionic-angular';
+import {
+    NavParams, Events, Alert, Platform, Modal, AlertController, ModalController
+} from 'ionic-angular';
 import {Storage} from '@ionic/storage';
 import {DataService} from '../../services/data.service';
 
@@ -15,6 +17,7 @@ import {PalmashowApp} from '../../app/app.component';
 import {LyricsPage} from '../lyrics/lyrics';
 
 import * as $ from 'jquery';
+import {Observable} from "rxjs/Observable";
 
 @Component({
     templateUrl:'detail.html'
@@ -72,7 +75,7 @@ export class Detail {
     ionViewDidLoad():void {
         if(this.playing) {
             this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_SOUND).then((value:string) => {
-                if (value === 'true') {
+                if (value || value == 'true') {
                     this.cacheService.cacheSound(this.sound, ()=> {
                         this._parent.mediaPlayer.play(this.sound);
                     });
@@ -200,46 +203,99 @@ export class Detail {
         });
         confirm.present();
     }
-    getRingtoneFolder(type:string):string {
+    getDestFolder(type:string):string {
         if(type === 'ringtone') {
-            return 'Ringtones';
+            return Utils.RINGTONE_FOLDER;
         }
-        return 'Notifications';
+        return Utils.NOTIFICATION_FOLDER;
+    }
+    isAndroid6OrGreater():boolean {
+        let version = this.platform.version();
+        return version.major >= 6;
     }
     saveAs(event:Event,type:string):void {
         event.preventDefault();
         if(this.canRingtone()) {
             this.cacheService.cacheSound(this.sound,() => {
-                this.copyFileToRingtoneFolder(type,() => {
-                    window.ringtone.setRingtone(cordova.file.externalRootDirectory +
-                        this.getRingtoneFolder(type)+'/'+ Utils.RINGTONE_DEFAULT_NAME+type+'.mp3',
-                        Utils.RINGTONE_DEFAULT_NAME+type, 'Palmashow', type, () => {
-                            let text:String = type === 'ringtone' ? 'sonnerie' : 'notification';
+
+                if(this.isAndroid6OrGreater()) {
+                    this.showExportConfirm().subscribe((fileData: any) => {
+                        this.copyFileToRingtoneFolder(type,fileData.soundName,() => {
+                            console.log('Song copied to Music folder');
+
                             let alert = this.alertController.create({
-                                title: 'Sauvegarde réussie',
-                                subTitle: 'Le son à été sauvegardé en tant que ' + text,
-                                buttons: ['Ok']
-                            });
-                            alert.present();
-                        },
-                        () => {
-                            let text:String = type === 'ringtone' ? 'sonnerie' : 'notification';
-                            let alert = this.alertController.create({
-                                title: 'Echec sauvegarde',
-                                subTitle: 'Le son n\'à pas été sauvegardé en tant que ' + text,
+                                title: 'Son copié avec succès',
+                                subTitle: 'Le son "'+fileData.soundName+'" à été copié dans le dossier '+this.getDestFolder(type),
                                 buttons: ['Ok']
                             });
                             alert.present();
                         });
-                });
+                    });
+                } else {
+                    this.copyFileToRingtoneFolder(type,this.sound.simpleName,() => {
+
+                        let ringtonePath:string = cordova.file.externalRootDirectory +
+                            this.getDestFolder(type)+'/'+ this.sound.simpleName;
+
+                        console.log('Save sound as a ringtone to: '+ ringtonePath, this.sound);
+
+                        window.ringtone.setRingtone(ringtonePath, this.sound.simpleName.replace('.mp3', ''), 'Palmashow', type, () => {
+                                 let text:String = type === 'ringtone' ? 'sonnerie' : 'notification';
+                                 let alert = this.alertController.create({
+                                     title: 'Sauvegarde réussie',
+                                     subTitle: 'Le son à été sauvegardé en tant que ' + text,
+                                     buttons: ['Ok']
+                                 });
+                                 alert.present();
+                         }, (err) => {
+                                console.error("Save as error: ", err);
+                                 let text:String = type === 'ringtone' ? 'sonnerie' : 'notification';
+                                 let alert = this.alertController.create({
+                                     title: 'Echec sauvegarde',
+                                     subTitle: 'Le son n\'à pas été sauvegardé en tant que ' + text,
+                                     buttons: ['Ok']
+                                 });
+                                 alert.present();
+                             });
+                         });
+                }
             });
         }
     }
-    copyFileToRingtoneFolder(type:string, callback:Function):void {
+    showExportConfirm(): Observable<any> {
+
+        return new Observable(observer => {
+            let prompt = this.alertController.create({
+                title: 'Exporter un son',
+                message: "Quel est le nom du son à exporter ?",
+                inputs: [
+                    {
+                        name: 'soundName',
+                        placeholder: 'Nom du fichier',
+                        value: 'Palmashow '+this.sound.simpleName
+                    },
+                ],
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        handler: () => {
+                            console.log('Cancel clicked');
+                        }
+                    },
+                    {
+                        text: 'Save',
+                        handler: fileData => observer.next(fileData)
+                    }
+                ]
+            });
+            prompt.present();
+        });
+    }
+    copyFileToRingtoneFolder(type:string, fileName: string, callback:Function):void {
         window.resolveLocalFileSystemURL(this.cacheService.soundCache.toInternalURL(this.sound.file),(fileEntry) => {
             window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory+
-                this.getRingtoneFolder(type),(dirEntry) => {
-                fileEntry.copyTo(dirEntry,Utils.RINGTONE_DEFAULT_NAME+type+'.mp3',callback);
+                this.getDestFolder(type) ,(dirEntry) => {
+                fileEntry.copyTo(dirEntry,fileName,callback);
             });
         });
     }

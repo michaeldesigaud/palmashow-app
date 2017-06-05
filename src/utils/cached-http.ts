@@ -11,7 +11,6 @@ import * as Utils from './app.utils';
 export class CachedHttp extends Http {
     constructor(_backend: ConnectionBackend, _defaultOptions: RequestOptions,private _cacheService:CacheService) {
         super(_backend,_defaultOptions);
-        console.log('CachedHttp constructor');
     }
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
         return Observable.fromPromise(this.checkCache(url).then((result:any) => {

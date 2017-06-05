@@ -71,7 +71,7 @@ export class CacheService {
         });
     }
     initImageCache():void {
-        ImgCache.init(() => this.events.publish(Utils.EVENT_CACHE_IMAGE_LOADED,'success'), () => console.log('ImgCache init: error! Check the log for errors'));
+        ImgCache.init(() => this.events.publish(Utils.EVENT_CACHE_IMAGE_LOADED,'success'), () => console.error('ImgCache init: error! Check the log for errors'));
         ImgCache.options.debug = true;
     }
     cacheImages(targets:any):void {
@@ -87,7 +87,7 @@ export class CacheService {
                 ImgCache.useCachedFile($(target));
             } else {
                 this.storage.get(Utils.LOCAL_STORAGE_USE_CACHE_IMAGE).then((value:string) => {
-                    if(value === 'true') {
+                    if(value || value === 'true') {
                         ImgCache.cacheFile($(target).attr('src'),() => ImgCache.useCachedFile($(target)));
                     }
                 });

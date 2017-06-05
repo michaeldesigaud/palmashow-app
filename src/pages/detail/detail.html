@@ -13,34 +13,38 @@
             <p *ngIf="sound.user_id">{{getUsername(sound.user_id)}}</p>
             <p>Ajouté le {{sound.creation_date | stringDate}}</p>
         </ion-item>
-        <ion-item *ngIf="canRingtone()">
+        <ion-item *ngIf="canRingtone() && !isAndroid6OrGreater()">
             <ion-label>Exporter en sonnerie</ion-label>
-            <button ion-button outline color="primary" item-right (click)="saveAs($event,'ringtone')"><ion-icon name="download"></ion-icon> Exporter</button>
+            <button ion-button icon-left outline color="primary" item-right (click)="saveAs($event,'ringtone')"><ion-icon name="download"></ion-icon> Exporter</button>
         </ion-item>
-        <ion-item *ngIf="canNotif()">
+        <ion-item *ngIf="canNotif() && !isAndroid6OrGreater()">
             <ion-label>Exporter en notification</ion-label>
-            <button ion-button outline color="primary" item-right (click)="saveAs($event,'notification')"><ion-icon name="download"></ion-icon> Exporter</button>
+            <button ion-button icon-left outline color="primary" item-right (click)="saveAs($event,'notification')"><ion-icon name="download"></ion-icon> Exporter</button>
+        </ion-item>
+        <ion-item *ngIf="isAndroid6OrGreater()">
+            <ion-label>Exporter le son</ion-label>
+            <button ion-button icon-left outline color="primary" item-right (click)="saveAs($event,'ringtone')"><ion-icon name="download"></ion-icon> Exporter</button>
         </ion-item>
         <ion-item>
             <ion-label>Mettre en Favoris</ion-label>
-            <button ion-button outline *ngIf="!bookmarked" item-right favorite (click)="onClickBookmark($event)"><ion-icon name="star"></ion-icon> Favoris</button>
-            <button ion-button *ngIf="bookmarked" item-right danger (click)="onClickDeleteBookmark($event)"><ion-icon name="star"></ion-icon> Delete</button>
+            <button ion-button icon-left outline *ngIf="!bookmarked" item-right favorite (click)="onClickBookmark($event)"><ion-icon name="star"></ion-icon> Favoris</button>
+            <button ion-button icon-left *ngIf="bookmarked" item-right danger (click)="onClickDeleteBookmark($event)"><ion-icon name="star"></ion-icon> Delete</button>
         </ion-item>
         <ion-item *ngIf="sound.lyrics">
             <ion-label>Paroles</ion-label>
-            <button ion-button outline item-right (click)="onClickLyrics($event)"><ion-icon name="musical_notes"></ion-icon> Paroles</button>
+            <button ion-button icon-left outline item-right (click)="onClickLyrics($event)"><ion-icon name="musical_notes"></ion-icon> Paroles</button>
         </ion-item>
         <ion-item *ngIf="platform.is('cordova')">
             <ion-label>Partager ce son</ion-label>
-            <button ion-button outline color="secondary" item-right (click)="onClickShare($event)"><ion-icon name="md-share"></ion-icon> Partager</button>
+            <button ion-button icon-left outline color="secondary" item-right (click)="onClickShare($event)"><ion-icon name="md-share"></ion-icon> Partager</button>
         </ion-item>
         <ion-item *ngIf="sound.youtube_url">
             <ion-label>Lien youtube</ion-label>
-            <button ion-button outline color="dark" item-right (click)="onRedirectYoutube($event)"><ion-icon name="desktop"></ion-icon> Youtube</button>
+            <button ion-button icon-left outline color="dark" item-right (click)="onRedirectYoutube($event)"><ion-icon name="desktop"></ion-icon> Youtube</button>
         </ion-item>
         <ion-item *ngIf="cacheService.soundInCache(sound.file)">
             <ion-label>Effacer du cache</ion-label>
-            <button ion-button outline color="danger" item-right (click)="removeFromCache($event)"><ion-icon name="trash"></ion-icon> Supprimer</button>
+            <button ion-button icon-left outline color="danger" item-right (click)="removeFromCache($event)"><ion-icon name="trash"></ion-icon> Supprimer</button>
         </ion-item>
     </ion-list>
     <div item-right class="spinner" [hidden]="!sound.loading">

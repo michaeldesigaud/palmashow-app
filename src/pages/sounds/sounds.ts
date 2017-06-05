@@ -41,7 +41,6 @@ export class SoundsPage {
             });
         } else {
             this.dataService.getSoundsByIds(this.ids,true).subscribe((sounds:Array<any>) => {
-                console.log(sounds);
                 this.sounds = sounds;
                 callback();
             });

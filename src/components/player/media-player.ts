@@ -9,9 +9,10 @@ import * as $ from 'jquery';
  */
 @Component({
     selector:'media-player',
-    template:'<audio controls="controls" preload="auto" id="mediaPlayer" style="width: 100%"></audio>'
+    template:'<audio controls="controls" preload="auto" id="mediaPlayer" style="width: 100%" controlsList="nodownload"></audio>'
 })
 export class MediaPlayer {
+
     constructor(private mediaService:MediaService,private el:ElementRef) {}
     ngOnInit():void {
         this.mediaService.setMedia($(this.el.nativeElement).children()[0]);
@@ -19,6 +20,7 @@ export class MediaPlayer {
     play(sound:any) {
         sound.playing = false;
         sound.loading = true;
+
         this.mediaService.play(sound);
     }
 }

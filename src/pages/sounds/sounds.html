@@ -26,7 +26,7 @@
             <h2>{{sound.name}}</h2>
             <p *ngIf="sound.user_id">{{getUsername(sound.user_id)}}</p>
             <p>Ajouté le {{sound.creation_date | stringDate:'shortDate'}}</p>
-            <button outline color="secondary" item-right (click)="onClickCache($event)" *ngIf="cacheService.soundInCache(sound.file)"><ion-icon name="archive"></ion-icon> Cache</button>
+            <button ion-button icon-left outline color="secondary" item-right (click)="onClickCache($event)" *ngIf="cacheService.soundInCache(sound.file)"><ion-icon name="archive"></ion-icon> Cache</button>
         </ion-item>
     </ion-list>
 </ion-content>
